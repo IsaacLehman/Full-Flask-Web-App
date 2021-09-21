@@ -1,0 +1,115 @@
+{% macro nav_link(endpoint, name, li_classes="", a_classes="") %} 
+    {% if request.endpoint and request.endpoint.endswith(endpoint) %} 
+        <li class="nav-item {{li_classes}}"><a class="nav-link active {{a_classes}}" href="{{ url_for(endpoint) }}">{{name}}</a><div class="underline"></div></li> 
+    {% else %} 
+        <li class="nav-item {{li_classes}}"><a class="nav-link {{a_classes}}" href="{{ url_for(endpoint) }}">{{name}}</a><div class="underline"></div></li> 
+    {% endif %} 
+{% endmacro %}
+
+{% macro admin_nav_link(name, li_classes="", a_classes="") %}
+    <li class="nav-item {{li_classes}}"><a class="nav-link {{a_classes}}" href="/admin/">{{name}}</a>
+        <div class="underline"></div>
+    </li>
+{% endmacro %}
+
+{% macro dashboard_nav_link(name, li_classes="", a_classes="") %}
+<li class="nav-item {{li_classes}}"><a class="nav-link {{a_classes}}" href="/dashboard/">{{name}}</a>
+    <div class="underline"></div>
+</li>
+{% endmacro %}
+
+
+{% macro primary_btn(name, id=None, onclick="", classes="", type="button") %} 
+    {% if id %} 
+        <button id={{id}} class="primary_btn {{classes}}" onclick="" type="{{type}}">{{name}}</button>
+    {% else %} 
+        <button class="primary_btn {{classes}}" onclick="" type="{{type}}">{{name}}</button>
+    {% endif %}
+{% endmacro %}
+
+{% macro secondary_btn(name, id=None, onclick="", classes="", type="button") %}  
+    {% if id %}  
+        <button id={{id}} class="secondary_btn {{classes}}" onclick="" type="{{type}}">{{name}}</button> 
+    {% else %} 
+        <button class="secondary_btn {{classes}}" onclick="" type="{{type}}">{{name}}</button> 
+    {% endif %} 
+{% endmacro %}
+
+
+{% macro form_element(label, name, id=None, onclick="", classes="", type="button") %}
+    {% if id %}
+    <button id={{id}} class="secondary_btn {{classes}}" onclick="" type="{{type}}">{{name}}</button>
+    {% else %}
+    <button class="secondary_btn {{classes}}" onclick="" type="{{type}}">{{name}}</button>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro paginate_blog_link(endpoint, category, tag, number) %}
+    {% if category %}
+    href="{{ url_for(endpoint, page=number, size=posts.per_page, category=category) }}"
+    {% elif tag %}
+    href="{{ url_for(endpoint, page=number, size=posts.per_page, tag=tag) }}"
+    {% else %}
+    href="{{ url_for(endpoint, page=number, size=posts.per_page) }}"
+    {% endif %}
+{% endmacro %}
+
+{% macro paginate_blog(endpoint, category=None, tag=None) %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if posts.has_prev %}
+            <li class="page-item">
+                <a class="page-link" {{ paginate_blog_link(endpoint, category, tag, posts.prev_num) }}
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" {{ paginate_blog_link(endpoint, category, tag, posts.prev_num) }}
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+    
+            {%- for page in posts.iter_pages() %}
+            <li class="page-item">
+                {% if page %}
+                {% if page != posts.page %}
+                <a class="page-link" {{ paginate_blog_link(endpoint, category, tag, page) }}>
+                    {{ page }}
+                </a>
+                {% else %}
+                <a class="page-link active" {{ paginate_blog_link(endpoint, category, tag, page) }}>
+                    <strong>{{ page }}</strong>
+                </a>
+                {% endif %}
+                {% else %}
+                <a class="page-link ellipsis" {{ paginate_blog_link(endpoint, category, tag, page) }}>
+                    …
+                </a>
+                {% endif %}
+            </li>
+            {%- endfor %}
+    
+            {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link" {{ paginate_blog_link(endpoint, category, tag, posts.next_num) }}
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" {{ paginate_blog_link(endpoint, category, tag, posts.next_num) }}
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+    
+        </ul>
+    </nav>
+{% endmacro %}

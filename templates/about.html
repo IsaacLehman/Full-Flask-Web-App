@@ -1,0 +1,85 @@
+{% extends "parts/master.html" %}
+
+{% block title %}
+About
+{% endblock %}
+
+{% block header_content %}
+<div class="container text-center masthead-padding-top">
+    <style>
+        .profile {
+            border-radius: 50%;
+            min-width: 200px;
+            width: 30%;
+            height: auto;
+        }
+    </style>
+    <img class="profile" src="{{ url_for('static', filename='img/profile-img.jpg') }}">
+</div>
+{% endblock %}
+
+
+{% block main_content %}
+<div class="container">
+
+    <div>
+        <h1 class="display-1 text-center">Isaac Lehman</h1>
+    </div>
+
+
+    <h2>Isaac Lehman</h2>
+    <p class="lead">
+        A passionate software developer and hobbyist looking to provide computational solutions to real world problems.
+        Below are links to personal projects and applications.
+    </p>
+    <hr style="background:#f8f9fa">
+    <h3>Budget App: <a href="http://moneyflowio.com/login" target="_blank">GO</a></h3>
+    <p class="">
+        A no frill, personal budget application designed to track your
+        expenses and manage your assets.
+    </p>
+    <h4>Distinct Notes:</h4>
+    <ul>
+        <li>Server is written in Python using Flask and Jinja</li>
+        <li>The database is SQLITE3</li>
+        <li>Uses SHA-256 hashing for passwords</li>
+        <li>Currently being served on a Google Cloud VM with Njinx and Gunicorn</li>
+    </ul>
+</div>
+
+<div class="container">
+
+    <hr style="background:#f8f9fa">
+    <h3>Isaac's Cooking: <a href="https://www.isaacscooking.com/" target="_blank">GO</a></h3>
+    <p class="">
+        A Google page's application designed to share my passion for cooking.
+    </p>
+</div>
+
+<div class="container mb-4">
+    <hr style="background:#f8f9fa">
+    <h3>GitHub: <a href="https://github.com/IsaacLehman" target="_blank">GO</a></h3>
+    <p class="">
+        Check me out on GitHub to see a variety of projects ranging from
+        android applications to a linux/bash terminal written in C.
+    </p>
+    <h4>List of Projects:</h4>
+    <ul>
+        <li>Covid Bunker (Flask): <a href="https://github.com/IsaacLehman/Covid-Bunker" target="_blank">GO</a></li>
+        <li>Budget App (Flask): <a href="https://github.com/IsaacLehman/Web-Budget-App" target="_blank">GO</a></li>
+        <li>Contact Book (Flask): <a href="https://github.com/IsaacLehman/flask-contact-book" target="_blank">GO</a>
+        </li>
+        <li>CHMOD Calculator (JavaScript): <a href="https://github.com/IsaacLehman/CHMOD-Calculator"
+                target="_blank">GO</a></li>
+        <li>Vector Calculator (android): <a href="https://github.com/IsaacLehman/VectorCalculator"
+                target="_blank">GO</a></li>
+        <li>Bash Terminal (C): <a href="https://github.com/IsaacLehman/Bash-Terminal" target="_blank">GO</a></li>
+        <li>Mastermind (C & Assembly): <a href="https://github.com/IsaacLehman/Mastermind" target="_blank">GO</a></li>
+        <li>Game of Life (C & openMP): <a href="https://github.com/IsaacLehman/Game-of-Life" target="_blank">GO</a></li>
+        <li>Mandelbrot Images (C & openMP): <a href="https://github.com/IsaacLehman/Mandelbrot_Image"
+                target="_blank">GO</a></li>
+        <li>Jacobi Iteration Heat Transfer (C & openMP/MPI): <a
+                href="https://github.com/IsaacLehman/Jacobi-Iteration-Heat-Transfer" target="_blank">GO</a></li>
+    </ul>
+</div>
+{% endblock %}

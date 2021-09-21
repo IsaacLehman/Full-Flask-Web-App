@@ -1,0 +1,38 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="row-fluid">
+
+    <div>
+        {% if session.access_level and session.access_level == 'ADMIN' %}
+        <h1>Flask-Admin</h1>
+        <p class="lead">
+            Your DB Manager
+        </p>
+        <div class="options">
+            <h2>Set default options</h2>
+            <table>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th></th>
+                </tr>
+                {% for opt in get_default_options() %}
+                <tr>
+                    <form action='/api/v1/option__add/' method="POST">
+                        <td><label for="{{ opt.name }}">{{ opt.name }}</label></td>
+                        <td><input type="{{ opt.type }}" name="{{ opt.name }}" value="{{ get_option(opt.name, opt.default) }}"></td>
+                        <td><button type="submit">Save</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% else %}
+        You do not have sufficient privliges.
+        {% endif %}
+    </div>
+
+    <a class="btn btn-primary" href="/"><i class="icon-arrow-left icon-white"></i>Back</a>
+</div>
+{% endblock body %}

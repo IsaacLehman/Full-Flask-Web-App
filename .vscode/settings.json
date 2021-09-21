@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./setup",
+        "./setup/__init__.py"
+    ],
+    "python.formatting.provider": "black"
+}

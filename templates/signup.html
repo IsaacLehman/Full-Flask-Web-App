@@ -1,0 +1,38 @@
+{% extends "parts/master.html" %}
+
+{% block title %}
+Sign Up
+{% endblock %}
+
+{% block css %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/signup.css') }}">
+{% endblock %}
+
+{% block header_content %}
+<div class="masthead-padding-top"></div>
+{% endblock %}
+
+
+{% block main_content %}
+<div class="justify-content-center container max-300 mt-5">
+    <h1 class="display-1 text-center pb-3">Sign Up</h1>
+    <hr>
+    <form action="/signup/" method="post">
+        <div class="input-group mb-3">
+            <input type="email" name="email" class="form-control" value="" placeholder="Email" required>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" name="username" class="form-control" value="" placeholder="Username" required>
+        </div>
+        <div class="input-group mb-5">
+            <input type="password" name="password" class="form-control" value="" placeholder="Password"
+                required>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            <button type="submit" name="button" class="btn btn-outline-dark">Create Account</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+/* 
+    GLOBAL VARS 
+    usage: 
+        <attribute>: var(--primary-dark);
+*/
+:root {
+
+    /* THEME */
+    --primary: white; 
+    --secondary: #e28167;
+    --secondary-hover: #e35129;
+    --accent: #81B29A;
+    --text: #343a40;
+    --nav-background: white;
+    --nav-underline: rgba(0,0,0,.7);;
+
+
+    /* MAIN BTN */
+    --main-btn-bg-dark: #333;
+    --main-btn-txt-dark: #f8f9fa;
+
+    --main-btn-hover-bg-dark: #f8f9fa;
+    --main-btn-hover-outline-dark: #333;
+    --main-btn-hover-txt-dark: #333;
+
+    /* NAV BTN */
+    --nav-btn-txt-dark: #f8f9fa;
+
+    --nav-btn-hover-bg-dark: #333;
+    --nav-btn-hover-txt-dark: #f8f9fa;
+
+}

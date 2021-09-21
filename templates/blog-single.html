@@ -1,0 +1,38 @@
+{% extends "parts/master.html" %}
+
+{% block title %}
+Blog
+{% endblock %}
+
+{% block desription %}{{ post.description }}{% endblock %}
+
+{% block header_content %}
+<div class="masthead-padding-top">
+    {% if post %}
+    <figure class="text-center">
+        <blockquote class="blockquote">
+            <h1 class="display-1 text-center">{{ post.title | safe }}</h1>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+            By: {{ post.author.username }} on {{ post.publish_date.strftime("%B %d, %Y") }}
+        </figcaption>
+    </figure>
+    {% else %}
+    <h2>No posts here :(</h2>
+    {% endif %}
+    
+</div>
+{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    {% if post %}
+        <div class="post-single">
+            <p>{{ post.body | markdown | safe }}</p>
+            <hr>
+            {% if post.tag_names() %}<p class="tag">Tags: {{ post.tag_names() | safe }}</p>{% endif %}
+            <p class="category">Category: {{ post.category.make_link() | safe }}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

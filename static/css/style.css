@@ -1,0 +1,309 @@
+@import "colors.css";
+@import "parts/scrollbar.css";
+
+/*
+    Outline:
+    - Body
+    - Buttons
+    - Navbar
+
+*/
+
+body{
+    min-height: 100vh;
+	background: var(--primary);
+	color: var(--text);
+}
+
+main {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+footer {
+    margin-top: 4rem;
+    padding: 1rem;
+}
+
+/*
+--------------------------------------------------------------------------------
+
+    START: BUTTON CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+.main-action-btn {
+    transition: all .5s ease;
+	color: var(--main-btn-txt-light) !important;
+	background-color: var(--main-btn-bg-light);
+	border-color: var(--main-btn-bg-light);
+}
+.main-action-btn:hover {
+    transition: all .5s ease;
+	color: var(--main-btn-hover-txt-light) !important;
+	background-color: var(--main-btn-hover-bg-light);
+	border-color: var(--main-btn-hover-outline-light);
+}
+
+
+.cover-section-img {
+    height: 100vh;
+    width: 100%;
+    object-fit: cover;
+    text-shadow: 0 0.05rem 0.1rem rgb(0 0 0 / 50%);
+    box-shadow: inset 0 0 5rem rgb(0 0 0 / 50%);
+}
+
+
+
+/*
+--------------------------------------------------------------------------------
+
+    START: MASTHEAD CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+
+.masthead-padding-top {
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+}
+
+
+
+/*
+--------------------------------------------------------------------------------
+
+    START: NAV CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+
+#main-nav .navbar-brand {
+    font-size: 1.5rem;
+}
+
+#main-nav {
+    font-size: 1.25rem;
+}
+
+.nav-active {
+    background-color: var(--nav-background);
+    -webkit-transition: -webkit-box-shadow 300ms linear;
+    -ms-transition: -moz-box-shadow 300ms linear;
+    transition: box-shadow 300ms linear;
+}
+
+@media only screen and (max-width: 991px) {
+  #main-nav {
+    background-color: var(--nav-background);
+    /* top: auto;
+    bottom: 0; */
+    -webkit-box-shadow: 0px 0px 5px 0px black;
+	   -moz-box-shadow: 0px 0px 5px 0px black;
+	        box-shadow: 0px 0px 5px 0px black;
+  }
+
+  /* .masthead-padding-top {
+      padding-top: 4rem;
+  } */
+}
+
+.logout-link {
+    color: var(--secondary) !important;
+}
+.logout-link:hover {
+    color: var(--secondary-hover) !important;
+}
+
+.navbar-nav li .underline{
+	height: 3px;
+	background-color: transparent;
+	width: 0%;
+    border-radius: 45px;
+	transition: width 0.2s, background-color 0.5s;
+	margin: 0 auto;
+}
+
+.navbar-nav li:hover .underline{
+	background-color: var(--nav-underline);  
+	width: 100%;
+}
+
+
+
+/*
+--------------------------------------------------------------------------------
+
+    START: SHADOW CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+.bottom-shadow {
+	-webkit-box-shadow: 0px 0px 5px 0px black;
+	   -moz-box-shadow: 0px 0px 5px 0px black;
+	        box-shadow: 0px 0px 5px 0px black;
+}
+
+
+
+
+/*
+--------------------------------------------------------------------------------
+
+    START: GENERAL LAYOUT CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+.max-500 {
+    max-width: 500px;
+}
+
+.max-300 {
+    max-width: 300px;
+}
+
+.main--side {
+    width: 70%;
+    float: left;
+}
+
+.side-bar--side {
+    width: 30%;
+    float: right;
+}
+
+/*
+--------------------------------------------------------------------------------
+
+    START: TOAST CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+
+.toast-padding {
+    margin-bottom: 0;
+}
+
+.toast-header-icon {
+    color: red;
+}
+
+@media only screen and (max-width: 991px) {
+    .toast-padding {
+        margin-bottom: 4rem;
+    }
+}
+
+
+/*
+--------------------------------------------------------------------------------
+
+    START: Excerpt CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+
+.excerpt {
+    padding: 1rem;
+    border-radius: .25rem;
+    border: thin solid transparent;
+    
+    transition: box-shadow 400ms, border-color 400ms;
+}
+
+.excerpt:hover {
+    box-shadow: 0px 0px 7px 1px #b0b0b0;
+    border-color: #ddd;
+}
+
+.excerpt a {
+    color: #559e84;
+}
+
+.excerpt a:hover {
+    color: #306856
+}
+
+.excerpt-title-link {
+    text-decoration: none;
+}
+
+.excerpt-title {
+    font-size: calc(1.4rem + 2.1vw);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--secondary);
+}
+
+.excerpt-title:hover {
+    color: var(--secondary-hover);
+}
+
+.excerpt-reference {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+.excerpt-divider {
+    width: 5rem;
+    color: var(--secondary-hover);
+}
+
+.excerpt-body {}
+
+.tag {
+    font-size: .9rem;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.category {
+    font-size: .9rem;
+    font-weight: 400;
+}
+
+
+/*
+--------------------------------------------------------------------------------
+
+    START: POST CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+
+/* .post {
+    padding: 1rem;
+    border-radius: .25rem;
+    border: thin solid transparent;
+    
+    transition: box-shadow 400ms, border-color 400ms;
+}
+
+.post:hover {
+    box-shadow: 0px 0px 7px 1px #b0b0b0;
+    border-color: #ddd;
+} */
+
+
+/*
+--------------------------------------------------------------------------------
+
+    START: PAGINATION CSS RULES
+
+--------------------------------------------------------------------------------
+*/
+
+.pagination {
+    margin-top: 4rem;
+}
+
+.page-link {
+    color: var(--secondary)
+}
+
+.page-link:hover {
+    color: var(--secondary-hover)
+}

@@ -1,0 +1,269 @@
+"""
+
+    Flask Website Template
+    By: Isaac Lehman
+    ---
+    All views are in this file
+    DB and Flask setup are in setup/__init__.py
+
+
+    Route Structure:
+        - LOGIN/LOGOUT/SIGNUP
+        - HOME
+        - GENERAL PAGES
+        - BLOG CONTENT
+        - POST ENDPOINTS
+        - ERRORS
+
+"""
+from flask.globals import request
+from setup import *
+from urllib.parse import unquote_plus
+
+
+
+''' ************************************************************************ '''
+'''                               ROUTE HANDLERS                             '''
+''' ************************************************************************ '''
+
+# ==================================
+#  LOGIN/LOGOUT/SIGNUP
+# ==================================
+
+''' page handlers '''
+#https://techmonger.github.io/10/flask-simple-authentication/
+### LOGIN ###
+# login page
+@app.route("/login/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+
+        if not (username and password):
+            flash("Username or Password cannot be empty.")
+            return redirect(url_for('login'))
+        else:
+            username = username.strip()
+            password = password.strip()
+
+        # Get user from database
+        possible_user = get_user__first(username)    
+        print(possible_user)
+
+        if possible_user and check_password_hash(possible_user.password, password):
+            session[LOG_IN_STATUS] = username
+            set_user__active_status(username, Active_Status.ACTIVE)
+
+            # set privilege
+            session[ACCESS_LEVEL] = possible_user.privilege
+            return redirect(url_for("home"))
+        else:
+            flash("Invalid username or password.")
+
+    return render_template("login.html")
+
+
+### LOGOUT ###
+@app.route("/logout/")
+@login_required
+def logout():
+    set_user__active_status(session[LOG_IN_STATUS], Active_Status.INACTIVE)
+
+    # clear session variables
+    session.pop(LOG_IN_STATUS, None)
+    session.pop(ACCESS_LEVEL, None)
+    
+    flash("successfully logged out.")
+    # send user back to login page
+    return redirect(url_for('login'))
+
+
+### SIGN UP ###
+# signup page
+@app.route("/signup/", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        email    = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+
+        if not (email and username and password):
+            flash("Email, Username and Password are required")
+            return redirect(url_for('signup'))
+        else:
+            email    = email.strip()
+            username = username.strip()
+            password = password.strip()
+
+        # Returns salted pwd hash in format : method$salt$hashedvalue
+        hashed_pwd = generate_password_hash(password, 'sha256')
+
+        if not add_user(email, username, hashed_pwd):
+            flash("Username '{u}' and/or Email '{e}' are not available.".format(u=username, e=email))
+            return redirect(url_for('signup'))
+
+        flash("User account has been created.")
+        return redirect(url_for("login"))
+    # if GET
+    return render_template("signup.html")
+
+
+# ==================================
+#  HOME
+# ==================================
+
+### HOME ###
+# home page
+@app.route("/", methods=["GET"])
+def home():
+    return render_template("home.html")
+
+
+# ==================================
+#  GENERAL PAGES
+# ==================================
+
+### ABOUT ###
+# about page
+@app.route("/about/", methods=["GET"])
+def about():
+    return render_template("about.html")
+
+
+# ==================================
+#  BLOG CONTENT
+# ==================================
+
+def get_pagination():
+    try:
+        page     = int(request.args.get('page', 1))
+        per_page = int(request.args.get('size', 10))
+    except:
+        page = 1
+        per_page = 10
+    return page, per_page
+
+### BLOG ###
+# Main page
+@app.route("/blog/", methods=["GET"])
+def blog():
+    page, per_page = get_pagination()
+    posts    = get_post__all().paginate(page, per_page, error_out=False)
+    # access posts with posts.items
+    return render_template("blog.html", posts=posts, title="Blog")
+
+
+### BLOG - Category ###
+@app.route("/blog/categories/<category>/", methods=["GET"])
+def blog__category(category):
+    page, per_page = get_pagination()
+    posts    = get_posts__category(category).paginate(page, per_page, error_out=False)
+    cat_name = get_category__first(category)
+    if cat_name:
+        cat_name = cat_name.name
+    else:
+        cat_name = "" # error name
+    return render_template("blog.html", posts=posts, category=category, title=cat_name)
+
+
+### BLOG - Tag ###
+@app.route("/blog/tags/<tag>/", methods=["GET"])
+def blog__tag(tag):
+    page, per_page = get_pagination()
+    posts    = get_posts__tag(tag).paginate(page, per_page, error_out=False)
+    tag_name = get_tag__first(tag)
+    if tag_name:
+        tag_name = tag_name.name
+    else:
+        tag_name = "" # error name
+    return render_template("blog.html", posts=posts, tag=tag, title=tag_name)
+
+
+### BLOG SINGLE ###
+@app.route("/blog/<slug>/", methods=["GET"])
+def blog__single(slug):
+    return render_template("blog-single.html", post=get_post_slug__first(slug))
+
+
+# ==================================
+#  POST ENDPOINTS
+# ==================================
+
+### GET OPTION ###
+@admin_required
+@app.route('/api/v1/option/<key>/', methods=['GET'])
+def get_option__API(key):
+    """
+        Call:   GET /api/v1/option/API_KEY/
+        Return: 1234...
+    """
+    option_found = get_option(unquote_plus(key))
+    if option_found:
+        return option_found, 200
+    else:
+        return None, 404
+
+
+### ADD/UPDATE OPTION ###
+@admin_required
+@app.route('/api/v1/option__add/', methods=['POST'])
+def add_option__API():
+    """
+        Call:   POST /api/v1/option__add/
+        Data:
+            name  = key
+            value = value
+        Return: 200 or 404
+    """
+    if len(request.form) < 1:
+        return 404
+    else:
+        request_dict = request.form.to_dict()
+        key          = list(request_dict.keys())[0]
+        value        = request_dict[key]
+        update_option(key, value)
+
+        # TODO: Edit front end to submit using ajax and remove the redirect
+        return redirect('/admin/')
+        #return f"{key} -> {value}", 200
+
+
+# ==================================
+#  ERRORS
+# ==================================
+
+''' errors handlers '''
+@app.errorhandler(400)
+def page_not_found_400(e):
+    return render_template("error.html", code=404, description="You Made A Bad Request"), 400
+
+
+@app.errorhandler(401)
+def page_not_found_401(e):
+    return render_template("error.html", code=404, description="Unauthorized Access"), 401
+
+
+@app.errorhandler(403)
+def page_not_found_403(e):
+    return render_template("error.html", code=404, description="Access Forbidden"), 403
+
+
+@app.errorhandler(404)
+def page_not_found_404(e):
+    return render_template("error.html", code=404, description="Page Not Found"), 404
+
+
+@app.errorhandler(500)
+def page_not_found_500(e):
+    return render_template("error.html", code=500, description="Internal Server Error"), 500
+
+
+
+if __name__ == "__main__":
+    # TODO: set the way you would like to run the app
+    app.run(debug=True, host=IP, port=PORT) # DEBUG MODE
+    #app.run(threaded=True, host=IP, port=PORT) # STANDARD FLASK
+
+# Having debug=True allows possible Python errors to appear on the web page
+# run with $> python server.py

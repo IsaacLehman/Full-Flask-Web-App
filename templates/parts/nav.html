@@ -1,0 +1,35 @@
+{% from "includes/macros.html" import nav_link with context %}
+{% from "includes/macros.html" import admin_nav_link with context %}
+{% from "includes/macros.html" import dashboard_nav_link with context %}
+
+<nav id="main-nav" class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/"> 
+            <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo" width="80" height="40" >
+        </a>
+        
+        <button class="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse"
+            data-bs-target="#main-nav-links" 
+            aria-controls="main-nav" 
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse" id="main-nav-links">
+            <span class="me-auto"></span>
+            <ul class="navbar-nav  mb-2 mb-lg-0">
+                {{ nav_link('home', 'Home') }}
+                {{ nav_link('blog', 'Blog') }}
+                {{ nav_link('about', 'About') }}
+                {% if session.access_level and session.access_level == 'ADMIN' %}{{ admin_nav_link('Admin') }}{% endif %}
+                {% if session.access_level and session.access_level == 'ADMIN' %}{{ dashboard_nav_link('Dashboard') }}{% endif %}
+                {% if session.logged_in %}{{ nav_link('logout', 'Logout', a_classes="logout-link") }}{% endif %}
+                {% if not session.logged_in %}{{ nav_link('login', 'Login') }}{% endif %}
+                {% if not session.logged_in %}{{ nav_link('signup', 'Sign Up') }}{% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
