@@ -133,7 +133,7 @@ def markdown_text(text):
     """
         Convert text to markdown
     """
-    return markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br', 'codehilite', TocExtension(toc_depth ="2-6")])
+    return markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br', 'codehilite', TocExtension(toc_depth ="2-6", baselevel=2)])
 
 
 # ==============================================================================

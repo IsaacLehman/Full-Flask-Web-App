@@ -33,7 +33,7 @@ Blog
 <div class="container post-single">
     {% if post %}
     <p>{{ post.body | markdown | safe }}</p>
-    <hr>
+    <div class="bottom-dividor"></div>
     {% if post.tag_names() %}
     <p class="tag">
         Tags: {{ post.tag_names() | safe }}
