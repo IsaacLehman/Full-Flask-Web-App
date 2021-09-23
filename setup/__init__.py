@@ -133,7 +133,7 @@ def markdown_text(text):
     """
         Convert text to markdown
     """
-    return markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br', TocExtension(toc_depth ="2-6"), 'codehilite'])
+    return markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br', 'codehilite', TocExtension(toc_depth ="2-6")])
 
 
 # ==============================================================================
@@ -254,7 +254,7 @@ class Tag(db.Model):
         return '<Tag %r>' % self.name
 
     def make_link(self):
-        return f'<a href="/blog/tags/{self.slug}/">{self.name}</a>'
+        return f'<a class="tag" href="/blog/tags/{self.slug}/">{self.name}</a>'
 
 
 # Custom key -> value pairs
@@ -759,6 +759,11 @@ all_default_options = [
         'name':'site-author-name',
         'type':'text',
         'default':'Site Author'
+    }, 
+    {
+        'name':'site-author-email',
+        'type':'text',
+        'default':'test@example.com'
     },
     {
         'name':'display_file_editor',

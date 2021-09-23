@@ -6,8 +6,19 @@
 #
 # BY: Isaac Lehman
 # ==============================================================================
+# CREATE VIRTUAL ENVIROMENT
+python3 -m venv FlaskApp
+source FlaskApp/bin/activate
+cd FlaskApp
+echo "=============================================================================="
+echo "Virtual enviroment created"
+# CLONE THE REPO
+git clone https://github.com/IsaacLehman/Full-Flask-Web-App.git
+cd Full-Flask-Web-App
+echo "=============================================================================="
+echo "Repository cloned"
 # SETUP
-pip3 -q install flask werkzeug flask_monitoringdashboard flask-sqlalchemy flask-admin markdown
+pip3 -q install flask werkzeug flask_monitoringdashboard flask-sqlalchemy flask-admin markdown gunicorn pygments
 echo "=============================================================================="
 echo "PIP installs finished Succesfully!"
 # CREATE DB
@@ -16,3 +27,7 @@ echo "==========================================================================
 echo "DB Created Succesfully!"
 echo "u: admin"
 echo "p: admin"
+echo "=============================================================================="
+echo "Starting server..."
+echo "=============================================================================="
+python3 server.py

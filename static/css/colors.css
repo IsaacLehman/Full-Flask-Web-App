@@ -6,13 +6,15 @@
 :root {
 
     /* THEME */
-    --primary: white; 
+    --primary: white;
     --secondary: #e28167;
     --secondary-hover: #e35129;
-    --accent: #81B29A;
+    --accent: #7ad6ca;
+    --accent-hover: #306856;
     --text: #343a40;
     --nav-background: white;
-    --nav-underline: rgba(0,0,0,.7);;
+    --nav-underline: rgba(0, 0, 0, .7);
+    ;
 
 
     /* MAIN BTN */

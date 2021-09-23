@@ -6,6 +6,11 @@ Blog
 
 {% block desription %}{{ post.description }}{% endblock %}
 
+{% block header_css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog-single.css') }}">
+{% endblock %}
+
 {% block header_content %}
 <div class="masthead-padding-top">
     {% if post %}
@@ -25,14 +30,18 @@ Blog
 {% endblock %}
 
 {% block main_content %}
-<div class="container">
+<div class="container post-single">
     {% if post %}
-        <div class="post-single">
-            <p>{{ post.body | markdown | safe }}</p>
-            <hr>
-            {% if post.tag_names() %}<p class="tag">Tags: {{ post.tag_names() | safe }}</p>{% endif %}
-            <p class="category">Category: {{ post.category.make_link() | safe }}</p>
-        </div>
+    <p>{{ post.body | markdown | safe }}</p>
+    <hr>
+    {% if post.tag_names() %}
+    <p class="tag">
+        Tags: {{ post.tag_names() | safe }}
+    </p>
+    {% endif %}
+    <p class="category">
+        Category: {{ post.category.make_link() | safe }}
+    </p>
     {% endif %}
 </div>
 {% endblock %}

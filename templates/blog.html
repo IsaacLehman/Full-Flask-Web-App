@@ -24,9 +24,9 @@ Blog
                 <hr class="excerpt-divider">
                 <p class="excerpt-body">{{ p.description | safe }}</p>
                 {% if all_tags %}
-                    <p class="tag">
-                        Tags: {{ all_tags| safe }}
-                    </p>
+                <p class="tag">
+                    Tags: {{ all_tags| safe }}
+                </p>
                 {% endif %}
                 <p class="category">
                     Category: {{ p.category.make_link() | safe }}
