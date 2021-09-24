@@ -176,6 +176,7 @@ class Post(db.Model):
     description       = db.Column(db.Text)
     status            = db.Column(db.Text,     nullable=False, default=Status.DRAFT) # Draft, Published, Archived
     publish_date      = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    num_views         = db.Column(db.Integer,                   default=0)
 
     # Foreign Keys
     category_id       = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
@@ -264,6 +265,7 @@ class Option(db.Model):
     value             = db.Column(db.Text, nullable=False)
     def __repr__(self):
         return f'<Option ({self.key} -> {self.value})>'
+
 
 
 ''' ************************************************************************ '''

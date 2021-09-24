@@ -17,7 +17,7 @@
 
 """
 from flask.globals import request
-from setup import *
+from setup import * 
 from urllib.parse import unquote_plus
 
 
@@ -183,7 +183,14 @@ def blog__tag(tag):
 ### BLOG SINGLE ###
 @app.route("/blog/<slug>/", methods=["GET"])
 def blog__single(slug):
-    return render_template("blog-single.html", post=get_post_slug__first(slug))
+    post = get_post_slug__first(slug)
+    if post and post.num_views:
+        post.num_views += 1
+        db.session.commit()
+    elif post:
+        post.num_views = 1
+        db.session.commit()
+    return render_template("blog-single.html", post=post)
 
 
 # ==================================
