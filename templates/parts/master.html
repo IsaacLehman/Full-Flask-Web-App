@@ -65,10 +65,17 @@
                     <span class="lead">
                         © Copyright 2021: {{ get_option('site-author-name') }}
                     </span>
+                    <span>
+                        <!-- GITHUB FOLLOW BUTTON -->
+                        <a class="github-button" href="https://github.com/IsaacLehman" data-size="large" data-show-count="true"
+                            aria-label="Follow @IsaacLehman on GitHub">Follow @IsaacLehman</a>
+                    </span>
                 </div>
             </div>
             {% block footer_scripts %}
                 <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+                <!-- GITHUB BUTTONS -->
+                <script async defer src="https://buttons.github.io/buttons.js"></script>
             {% endblock %}
             {% block footer_css %}{% endblock %}
         </footer>

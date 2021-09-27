@@ -8,6 +8,7 @@
 
 
     Route Structure:
+        - LOGGING
         - LOGIN/LOGOUT/SIGNUP
         - HOME
         - GENERAL PAGES
@@ -25,6 +26,23 @@ from urllib.parse import unquote_plus
 ''' ************************************************************************ '''
 '''                               ROUTE HANDLERS                             '''
 ''' ************************************************************************ '''
+
+# ==================================
+#  LOGGING
+# ==================================
+# @app.before_request
+# def log_visit():    
+#     print("ENDPOING", request.endpoint)
+#     if request.endpoint not in [ 'static', 'admin.static' ]:
+#         num_site_views = Option.query.filter_by(key='num_site_views').first()
+#         if num_site_views:
+#             num_site_views.value = str( int(num_site_views.value) + 1 )
+#             db.session.commit()
+#         else:
+#             new_option = Option(key='num_site_views', value='0')
+#             db.session.add(new_option)
+#             db.session.commit()
+#     return
 
 # ==================================
 #  LOGIN/LOGOUT/SIGNUP
@@ -184,6 +202,7 @@ def blog__tag(tag):
 @app.route("/blog/<slug>/", methods=["GET"])
 def blog__single(slug):
     post = get_post_slug__first(slug)
+    # Incriment post view count
     if post and post.num_views:
         post.num_views += 1
         db.session.commit()

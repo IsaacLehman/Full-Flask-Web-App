@@ -267,6 +267,17 @@ class Option(db.Model):
         return f'<Option ({self.key} -> {self.value})>'
 
 
+# Adapted From: https://www.gatsbyjs.com/blog/2019-08-27-roll-your-own-comment-system/
+class Comment:
+    id                 = db.Column(db.Integer, primary_key=True)
+    username           = db.Column(db.Text,     nullable=False)
+    slug               = db.Column(db.Text,     nullable=False)
+    body               = db.Column(db.Text,     nullable=False)
+    date               = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    reCAPTCHA          = db.Column(db.Text)
+    spam               = db.Column(db.Integer)
+    parent_id          = db.Column(db.Integer)
+
 
 ''' ************************************************************************ '''
 '''                                DATABASE HELPERS                          '''
