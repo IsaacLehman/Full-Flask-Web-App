@@ -269,7 +269,7 @@ class Option(db.Model):
 
 # Adapted From: https://www.gatsbyjs.com/blog/2019-08-27-roll-your-own-comment-system/
 class Comment:
-    id                 = db.Column(db.Integer, primary_key=True)
+    id                 = db.Column(db.Integer,  primary_key=True)
     username           = db.Column(db.Text,     nullable=False)
     slug               = db.Column(db.Text,     nullable=False)
     body               = db.Column(db.Text,     nullable=False)
@@ -782,6 +782,16 @@ all_default_options = [
         'name':'display_file_editor',
         'type':'text',
         'default':'False'
+    },
+    {
+        'name':'reCAPTCHA private key',
+        'type':'text',
+        'default':''
+    },
+    {
+        'name':'reCAPTCHA public key',
+        'type':'text',
+        'default':''
     }
 ]
 
