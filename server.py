@@ -17,8 +17,9 @@
         - ERRORS
 
 """
+import re
 from flask.globals import request
-from setup import * 
+from setup import *   
 from urllib.parse import unquote_plus
 
 
@@ -254,6 +255,60 @@ def add_option__API():
         return redirect('/admin/')
         #return f"{key} -> {value}", 200
 
+### GET COMMENTS ###
+@login_required
+@app.route('/api/v1/comment/<slug>/<slug2>/', methods=['GET'])
+@app.route('/api/v1/comment/<slug>/', methods=['GET'])
+def get_comment_slug__API(slug, slug2=None) :
+    """
+        Call:   GET /api/v1/comment/slug/
+        Return: {Comment} in JSON
+    """
+    if slug2:
+        slug = slug + '/' + slug2
+
+    all_comments = Comment.query.filter_by(slug=slug).all()
+    all_comments_JSON = {"data":[]}
+
+    for comment in all_comments:
+        all_comments_JSON["data"].append((comment.get_JSON()))
+
+    return jsonify(all_comments_JSON)
+
+
+### ADD COMMENTS ###
+@login_required
+@app.route('/api/v1/comment/<slug>/<slug2>/', methods=['POST'])
+@app.route('/api/v1/comment/<slug>/', methods=['POST'])
+def add_comment__API(slug, slug2=None) :
+    """
+        Call:   GET /api/v1/comment/slug/
+        Return: {Comment} in JSON
+    """
+    if slug2:
+        slug = slug + '/' + slug2
+
+    if len(request.json) < 1:
+        return 404
+    else:
+        request_dict = request.json
+        username = getUser()
+        body = request_dict.get('body', None)
+        reCAPTCHA = request_dict.get('reCAPTCHA', None)
+        parentId = request_dict.get('parent_id')
+
+        new_comment = Comment(username=username, slug=slug, body=body, reCAPTCHA=reCAPTCHA, parent_id=parentId)
+        db.session.add(new_comment)
+        db.session.commit()
+
+    all_comments = Comment.query.filter_by(slug=slug).all()
+    all_comments_JSON = {"data":[]}
+
+
+    for comment in all_comments:
+        all_comments_JSON["data"].append((comment.get_JSON()))
+
+    return jsonify(all_comments_JSON)
 
 # ==================================
 #  ERRORS

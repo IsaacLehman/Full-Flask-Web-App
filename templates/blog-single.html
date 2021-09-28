@@ -45,3 +45,7 @@ Blog
     {% endif %}
 </div>
 {% endblock %}
+
+{% block footer_scripts %}
+<script src="{{ url_for('static', filename='js/comment.js') }}"></script>
+{% endblock %}

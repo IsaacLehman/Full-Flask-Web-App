@@ -34,6 +34,7 @@
         - FLASK-ADMIN SET UP
         - PYTHON FUNCTIONS
         - JINJA FILTERS
+        - JINJA FUNCTIONS
 
 
 """
@@ -48,7 +49,7 @@ from enum import unique
 from flask import Flask, render_template
 from flask import request, session, flash
 from flask import redirect, url_for
-from flask import g
+from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin, AdminIndexView, expose 
 from flask_admin.contrib.fileadmin import FileAdmin
@@ -268,7 +269,7 @@ class Option(db.Model):
 
 
 # Adapted From: https://www.gatsbyjs.com/blog/2019-08-27-roll-your-own-comment-system/
-class Comment:
+class Comment(db.Model):
     id                 = db.Column(db.Integer,  primary_key=True)
     username           = db.Column(db.Text,     nullable=False)
     slug               = db.Column(db.Text,     nullable=False)
@@ -277,8 +278,21 @@ class Comment:
     reCAPTCHA          = db.Column(db.Text)
     spam               = db.Column(db.Integer)
     parent_id          = db.Column(db.Integer)
+    def __repr__(self):
+        return f'<Comment ({self.id} -> {self.slug})>'
 
+    def get_JSON(self):
+        return {
+            "id":self.id,
+            "username":self.username,
+            "slug":self.slug,
+            "body":self.body,
+            "date":self.date,
+            "parent_id":self.parent_id,
+            "is_spam":self.spam
+        }
 
+        
 ''' ************************************************************************ '''
 '''                                DATABASE HELPERS                          '''
 ''' ************************************************************************ '''
@@ -792,9 +806,13 @@ all_default_options = [
         'name':'reCAPTCHA public key',
         'type':'text',
         'default':''
+    },
+    {
+        'name':'github-username',
+        'type':'text',
+        'default':''
     }
 ]
-
 # ==========================================
 # Model Views for DB tables
 # ==========================================

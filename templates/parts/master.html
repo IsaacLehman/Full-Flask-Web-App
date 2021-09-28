@@ -62,14 +62,20 @@
             <div class="footer-main">
                 <hr>
                 <div class="container">
-                    <span class="lead">
-                        © Copyright 2021: {{ get_option('site-author-name') }}
-                    </span>
-                    <span>
-                        <!-- GITHUB FOLLOW BUTTON -->
-                        <a class="github-button" href="https://github.com/IsaacLehman" data-size="large" data-show-count="true"
-                            aria-label="Follow @IsaacLehman on GitHub">Follow @IsaacLehman</a>
-                    </span>
+                    <div class="row">
+                        <div class="col-6">
+                            <span class="lead">
+                                © Copyright 2021: {{ get_option('site-author-name') }}
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <span class="float-end">
+                                <!-- GITHUB FOLLOW BUTTON -->
+                                <a class="github-button" href="https://github.com/{{ get_option('github-username') }}" data-size="large" data-show-count="true"
+                                    aria-label="Follow @{{ get_option('github-username') }} on GitHub">Follow @{{ get_option('github-username') }}</a>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% block footer_scripts %}
