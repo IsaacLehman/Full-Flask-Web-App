@@ -656,7 +656,7 @@ def get_post_slug__first(slug):
         ex. get_post_slug__first('cookie-dough')
     """
     try:
-        return Post.query.filter_by(slug=slug).first()
+        return Post.query.filter_by(slug=slug, status=Status.PUBLISHED).first()
     except:
         return None
 
@@ -666,7 +666,7 @@ def get_post__all():
         ex. get_post__all()
     """
     try:
-        return Post.query.order_by(Post.publish_date.desc())
+        return Post.query.filter_by(status=Status.PUBLISHED).order_by(Post.publish_date.desc())
     except:
         return None
 
@@ -676,7 +676,7 @@ def get_posts__title(title):
         ex. get_posts__title('How to read a book')
     """
     try:
-        return Post.query.filter_by(title=title).order_by(Post.publish_date.desc())
+        return Post.query.filter_by(title=title, status=Status.PUBLISHED).order_by(Post.publish_date.desc())
     except:
         return None
 
@@ -686,7 +686,7 @@ def get_posts__category(category):
         ex. get_posts__category('creamy')
     """
     try:
-        return Post.query.filter_by(category=get_category__first(category)).order_by(Post.publish_date.desc())
+        return Post.query.filter_by(category=get_category__first(category), status=Status.PUBLISHED).order_by(Post.publish_date.desc())
         #return Post.query.filter_by(category=category).all()
     except:
         return None
@@ -697,7 +697,7 @@ def get_posts__tag(tag):
         ex. get_posts__tag('Hot')
     """
     try:
-        return Post.query.filter(Post.tags.any(Tag.slug.contains(tag))).order_by(Post.publish_date.desc())
+        return Post.query.filter(Post.tags.any(Tag.slug.contains(tag))).filter(Post.status == Status.PUBLISHED).order_by(Post.publish_date.desc())
     except:
         return None
 
@@ -711,7 +711,7 @@ def get_posts__author(author, is_object=True):
         if is_object:
             return Post.query.filter_by(author=author).all()
         else:
-            return Post.query.filter(Post.author.has(User.username.contains(author))).order_by(Post.publish_date.desc())
+            return Post.query.filter(Post.author.has(User.username.contains(author))).filter(Post.status == Status.PUBLISHED).order_by(Post.publish_date.desc())
     except:
         return None
 
@@ -721,7 +721,7 @@ def get_posts__title(key_word):
             ex. get_posts__title('Make')
         """
         try:
-            return Post.query.filter(Post.title.contains(key_word)).order_by(Post.publish_date.desc())
+            return Post.query.filter(Post.title.contains(key_word)).filter(Post.status == Status.PUBLISHED).order_by(Post.publish_date.desc())
         except:
             return None
 
@@ -731,7 +731,7 @@ def get_posts__title_and_body(key_word):
             ex. get_posts__title_and_body('Make')
         """
         try:
-            return Post.query.filter(Post.title.contains(key_word) | Post.body.contains(key_word)).order_by(Post.publish_date.desc())
+            return Post.query.filter(Post.title.contains(key_word) | Post.body.contains(key_word)).filter(Post.status == Status.PUBLISHED).order_by(Post.publish_date.desc())
         except:
             return None
 

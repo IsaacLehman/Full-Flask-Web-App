@@ -105,11 +105,9 @@ var COMMENT_JS = (function (COMMENT_JS) {
     COMMENT_JS.Ajax = {
         onLoad: function (e) {
             data = JSON.parse(e.target.response);
-            console.log(data, data.length)
 
             if (data && Array.isArray(data.data)) {
                 data.data.forEach(element => {
-                    console.log(element)
                     COMMENT_JS.Comments.createComment(element);
                 });
             } else {
@@ -203,9 +201,8 @@ var COMMENT_JS = (function (COMMENT_JS) {
             let footer = document.createElement("div");
             footer.classList.add('card-footer');
             footer.classList.add('text-muted');
-            var date = Date.parse(data.date);
-            //console.log(date.toString(), date.toLocaleString('en-US'), date)
-            footer.innerHTML = `<span class="comment-user">@${data.username}</span>  <small class="comment-date" style="float:right">${data.date}</small>`;
+            var date = new Date(Date.parse(data.date));
+            footer.innerHTML = `<span class="comment-user">@${data.username}</span>  <small class="comment-date" style="float:right">${date.toLocaleString('en-US')}</small>`;
 
             // add the elements to the newly created div
             innerDiv.appendChild(body);
@@ -228,17 +225,20 @@ var COMMENT_JS = (function (COMMENT_JS) {
             COMMENT_JS.Comments.setupComments();
 
             // COMMENT FORM SUBMIT FUNCTIONS
-            document.getElementById('comment-form').addEventListener('submit', function (e) {
-                // prevent the form submission
-                e.preventDefault();
-                var form = e.target;
-                var body_element = form.querySelector("#comment-body");
-                if (body_element) {
-                    var body = body_element.value; // get the value 
-                    body_element.value = ''; // clear the value
-                    COMMENT_JS.Ajax.addComment(body);
-                }
-            });
+            var comment_form = document.getElementById('comment-form')
+            if (comment_form) {
+                comment_form.addEventListener('submit', function (e) {
+                    // prevent the form submission
+                    e.preventDefault();
+                    var form = e.target;
+                    var body_element = form.querySelector("#comment-body");
+                    if (body_element) {
+                        var body = body_element.value; // get the value 
+                        body_element.value = ''; // clear the value
+                        COMMENT_JS.Ajax.addComment(body);
+                    }
+                });
+            }
 
             // GET PREVIOUS COMMENTS
             COMMENT_JS.Ajax.get_comments();
