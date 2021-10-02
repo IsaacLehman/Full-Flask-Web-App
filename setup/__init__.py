@@ -268,32 +268,41 @@ class Option(db.Model):
         return f'<Option ({self.key} -> {self.value})>'
 
 
+# comment db:
+# - id
+# - body
+# - was verified
+# - reCAPTCHA score
+
+# # foriegn keys
+# - post
+# - user
+
 # Adapted From: https://www.gatsbyjs.com/blog/2019-08-27-roll-your-own-comment-system/
 class Comment(db.Model):
     id                 = db.Column(db.Integer,  primary_key=True)
-    username           = db.Column(db.Text,     nullable=False)
-    slug               = db.Column(db.Text,     nullable=False)
     body               = db.Column(db.Text,     nullable=False)
     date               = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    reCAPTCHA          = db.Column(db.Text)
     spam               = db.Column(db.Integer)
-    parent_id          = db.Column(db.Integer)
+    reCAPTCHA_score    = db.Column(db.Float)
 
     # Foreign Keys
-    #author_id         = db.Column(db.Integer,   db.ForeignKey('user.id'), nullable=False)
-    #author            = db.relationship('User', backref=db.backref('comments', lazy=True))
+    author_id         = db.Column(db.Integer,   db.ForeignKey('user.id'), nullable=False)
+    author            = db.relationship('User', backref=db.backref('comments', lazy=True))
+
+    post_id         = db.Column(db.Integer,   db.ForeignKey('post.id'), nullable=False)
+    post            = db.relationship('Post', backref=db.backref('comments', lazy=True))
 
     def __repr__(self):
-        return f'<Comment ({self.id} -> {self.slug})>'
+        return f'<Comment ({self.author.username} -> {self.id} -> {self.post.slug})>'
 
     def get_JSON(self):
         return {
             "id":self.id,
-            "username":self.username,
-            "slug":self.slug,
+            "username":self.author.username,
+            "slug":self.post.slug,
             "body":self.body,
             "date":self.date,
-            "parent_id":self.parent_id,
             "is_spam":self.spam
         }
 

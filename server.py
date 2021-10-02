@@ -256,7 +256,6 @@ def add_option__API():
         #return f"{key} -> {value}", 200
 
 ### GET COMMENTS ###
-@login_required
 @app.route('/api/v1/comment/<slug>/<slug2>/', methods=['GET'])
 @app.route('/api/v1/comment/<slug>/', methods=['GET'])
 def get_comment_slug__API(slug, slug2=None) :
@@ -264,16 +263,37 @@ def get_comment_slug__API(slug, slug2=None) :
         Call:   GET /api/v1/comment/slug/
         Return: {Comment} in JSON
     """
+    post_slug = slug
     if slug2:
-        slug = slug + '/' + slug2
+        post_slug = slug2
 
-    all_comments = Comment.query.filter_by(slug=slug).all()
+    post = Post.query.filter_by(slug=post_slug).first()
+    print(post, post_slug)
+
+    all_comments = Comment.query.filter_by(post_id=post.id).all()
     all_comments_JSON = {"data":[]}
 
     for comment in all_comments:
         all_comments_JSON["data"].append((comment.get_JSON()))
 
     return jsonify(all_comments_JSON)
+
+    # try:
+    #     post_slug = slug
+    #     if slug2:
+    #         post_slug = slug2
+
+    #     post = Post.query.filter_by(slug=slug).first()
+
+    #     all_comments = Comment.query.filter_by(post_id=post.id).all()
+    #     all_comments_JSON = {"data":[]}
+
+    #     for comment in all_comments:
+    #         all_comments_JSON["data"].append((comment.get_JSON()))
+
+    #     return jsonify(all_comments_JSON)
+    # except Exception:
+    #     return jsonify({"data":[]})
 
 
 ### ADD COMMENTS ###
@@ -285,30 +305,50 @@ def add_comment__API(slug, slug2=None) :
         Call:   GET /api/v1/comment/slug/
         Return: {Comment} in JSON
     """
+    
+    post_slug = slug
     if slug2:
-        slug = slug + '/' + slug2
+        post_slug = slug2
 
     if len(request.json) < 1:
         return 404
     else:
         request_dict = request.json
-        username = getUser()
+        post = Post.query.filter_by(slug=post_slug).first()
+        current_user = User.query.filter_by(username=getUser()).first()       
         body = request_dict.get('body', None)
-        reCAPTCHA = request_dict.get('reCAPTCHA', None)
-        parentId = request_dict.get('parent_id')
+        reCAPTCHA_score = request_dict.get('reCAPTCHA', None)
 
-        new_comment = Comment(username=username, slug=slug, body=body, reCAPTCHA=reCAPTCHA, parent_id=parentId)
+        new_comment = Comment(author=current_user, post=post, body=body, reCAPTCHA_score=reCAPTCHA_score)
         db.session.add(new_comment)
         db.session.commit()
 
-    # all_comments = Comment.query.filter_by(slug=slug).all()
-    # all_comments_JSON = {"data":[]}
-
-
-    # for comment in all_comments:
-    #     all_comments_JSON["data"].append((comment.get_JSON()))
 
     return jsonify(new_comment.get_JSON())
+
+    # try:
+    #     post_slug = slug
+    #     if slug2:
+    #         post_slug = slug2
+
+    #     if len(request.json) < 1:
+    #         return 404
+    #     else:
+    #         request_dict = request.json
+    #         post = Post.query.filter_by(slug=slug).first()
+    #         current_user = User.query.filter_by(username=getUser())        
+    #         body = request_dict.get('body', None)
+    #         reCAPTCHA = request_dict.get('reCAPTCHA', None)
+
+    #         new_comment = Comment(user=current_user, post=post, body=body, reCAPTCHA=reCAPTCHA)
+    #         db.session.add(new_comment)
+    #         db.session.commit()
+
+
+    #     return jsonify(new_comment.get_JSON())
+    # except Exception:
+    #     return jsonify({"data":[]})
+
 
 # ==================================
 #  ERRORS
