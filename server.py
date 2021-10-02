@@ -301,14 +301,14 @@ def add_comment__API(slug, slug2=None) :
         db.session.add(new_comment)
         db.session.commit()
 
-    all_comments = Comment.query.filter_by(slug=slug).all()
-    all_comments_JSON = {"data":[]}
+    # all_comments = Comment.query.filter_by(slug=slug).all()
+    # all_comments_JSON = {"data":[]}
 
 
-    for comment in all_comments:
-        all_comments_JSON["data"].append((comment.get_JSON()))
+    # for comment in all_comments:
+    #     all_comments_JSON["data"].append((comment.get_JSON()))
 
-    return jsonify(all_comments_JSON)
+    return jsonify(new_comment.get_JSON())
 
 # ==================================
 #  ERRORS

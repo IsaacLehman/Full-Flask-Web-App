@@ -32,20 +32,37 @@ Blog
 {% block main_content %}
 <div class="container post-single">
     {% if post %}
-    <p>{{ post.body | markdown | safe }}</p>
-    <div class="bottom-dividor"></div>
-    {% if post.tag_names() %}
-    <p class="tag">
-        Tags: {{ post.tag_names() | safe }}
-    </p>
-    {% endif %}
-    <p class="category">
-        Category: {{ post.category.make_link() | safe }}
-    </p>
+        <p>{{ post.body | markdown | safe }}</p>
+        <div class="bottom-dividor"></div>
+        {% if post.tag_names() %}
+            <p class="tag">
+                Tags: {{ post.tag_names() | safe }}
+            </p>
+        {% endif %}
+        <p class="category">
+            Category: {{ post.category.make_link() | safe }}
+        </p>
+        <div class="mt-5 comment-section">
+            <div class="p-3 shadow card">
+                <form class="form m-0" id="comment-form" action="#">
+                    <textarea name="body" id="comment-body" class="form-control" placeholder="Your comment..."
+                        rows="4"></textarea>
+                    <div class="row">
+                        <div class="col-auto me-auto"></div>
+                        <div class="col-auto">
+                            <button class="btn btn-outline-dark mt-3" type="submit">Add Comment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="comment-div" class="mt-4">
+            </div>
+        </div>
     {% endif %}
 </div>
 {% endblock %}
 
 {% block footer_scripts %}
+{{ super() }}
 <script src="{{ url_for('static', filename='js/comment.js') }}"></script>
 {% endblock %}

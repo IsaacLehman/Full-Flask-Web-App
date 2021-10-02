@@ -599,3 +599,41 @@ main blockquote {
 }
 
 /* Literal.Number.Integer.Long */
+
+
+
+/* Comments */
+.comment-user {
+    background: #e28167;
+    color: black;
+    border-radius: 1rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+}
+
+.bottom-dividor {
+    border-top: 3px solid #e28167;
+    border-radius: 20px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    opacity: .75;
+}
+
+.tag {
+    font-size: 1.25rem;
+}
+
+.category {
+    font-size: 1.25rem;
+}
+
+.profile-img {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    box-shadow: none !important;
+}

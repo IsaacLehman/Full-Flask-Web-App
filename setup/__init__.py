@@ -278,6 +278,11 @@ class Comment(db.Model):
     reCAPTCHA          = db.Column(db.Text)
     spam               = db.Column(db.Integer)
     parent_id          = db.Column(db.Integer)
+
+    # Foreign Keys
+    #author_id         = db.Column(db.Integer,   db.ForeignKey('user.id'), nullable=False)
+    #author            = db.relationship('User', backref=db.backref('comments', lazy=True))
+
     def __repr__(self):
         return f'<Comment ({self.id} -> {self.slug})>'
 
@@ -292,7 +297,7 @@ class Comment(db.Model):
             "is_spam":self.spam
         }
 
-        
+
 ''' ************************************************************************ '''
 '''                                DATABASE HELPERS                          '''
 ''' ************************************************************************ '''
@@ -892,6 +897,7 @@ admin.add_view(PostModelView(Post,     db.session))
 admin.add_view(DASHBOARDModelView(Tag,      db.session))
 admin.add_view(DASHBOARDModelView(Category, db.session))
 admin.add_view(DASHBOARDModelView(Option,   db.session))
+admin.add_view(DASHBOARDModelView(Comment,   db.session))
 
 
 # ==========================================
