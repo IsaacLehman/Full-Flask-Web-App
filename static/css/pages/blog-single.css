@@ -604,7 +604,7 @@ main blockquote {
 
 /* Comments */
 .comment-user {
-    background: #e28167;
+    border: thin solid var(--secondary);
     color: black;
     border-radius: 1rem;
     padding-left: .5rem;

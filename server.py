@@ -269,8 +269,7 @@ def get_comment_slug__API(slug, slug2=None) :
             post_slug = slug2
 
         post = Post.query.filter_by(slug=post_slug).first()
-        print(post, post_slug)
-
+        
         all_comments = Comment.query.filter_by(post_id=post.id).all()
         all_comments_JSON = {"data":[]}
 
