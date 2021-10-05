@@ -19,7 +19,7 @@
 """
 import re
 from flask.globals import request
-from setup import *   
+from setup import *    
 from urllib.parse import unquote_plus
 
 
@@ -136,7 +136,9 @@ def signup():
 # home page
 @app.route("/", methods=["GET"])
 def home():
-    return render_template("home.html")
+    all_categories = Category.query.order_by(Category.name.desc()).all()
+    all_tags = Tag.query.order_by(Tag.name.desc()).all()
+    return render_template("home.html", all_categories=all_categories, all_tags=all_tags)
 
 
 # ==================================
@@ -269,7 +271,7 @@ def get_comment_slug__API(slug, slug2=None) :
             post_slug = slug2
 
         post = Post.query.filter_by(slug=post_slug).first()
-        
+
         all_comments = Comment.query.filter_by(post_id=post.id).all()
         all_comments_JSON = {"data":[]}
 

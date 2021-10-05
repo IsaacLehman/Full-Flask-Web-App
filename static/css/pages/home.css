@@ -1,0 +1,70 @@
+/**
+    CSS FOR HOME PAGE
+*/
+
+/* Categories */
+.category-card {
+    height: 5rem;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: thin solid var(--secondary);
+
+    transition: box-shadow 400ms, border-color 400ms, transform 100ms;
+}
+
+.category-card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    border-color: var(--secondary-hover);
+    transform: scale(1.05);
+}
+
+.category-card .category {
+    font-size: 1.75rem;
+    text-transform: capitalize;
+    color: var(--accent);
+
+    transition: color 400ms;
+}
+
+.category-card:hover .category {
+
+    color: var(--accent-hover);
+}
+
+
+
+/* Tags */
+.tag-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    height: 3rem;
+    background: var(--secondary);
+    border-radius: 45px;
+
+    transition: box-shadow 400ms, transform 100ms;
+}
+
+.tag-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+}
+
+.tag-card .tag {
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: var(--accent-hover);
+}
+
+.tag-card:hover .tag {
+    text-transform: capitalize;
+}
+
+/* Links */
+.no-underline {
+    text-decoration: none;
+}
