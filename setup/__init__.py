@@ -43,33 +43,38 @@
 ''' ************************************************************************ '''
 '''                                   IMPORTS                                '''
 ''' ************************************************************************ '''
-
-''' set app, cache time, and session secret key '''
-from enum import unique
-from flask import Flask, render_template
-from flask import request, session, flash
-from flask import redirect, url_for
-from flask import jsonify
+# FLASK
+from flask import (
+    request, 
+    session, 
+    flash, 
+    Flask,
+    redirect, 
+    url_for
+)
+# DB/ADMIN/DASHBOARD
 from flask_sqlalchemy import SQLAlchemy
+# ---
 from flask_admin import Admin, AdminIndexView, expose 
 from flask_admin.contrib.fileadmin import FileAdmin
 from flask_admin.contrib.sqla import ModelView
-from functools import wraps
-from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+# ---
 import flask_monitoringdashboard as dashboard
-import random
-import os
-
-from html import unescape
+# MARKDOWN
 import markdown
 from markdown.extensions.toc import TocExtension
+# RANDOM
+from functools import wraps
+from datetime import datetime
+from html import unescape
+import os
+
 
 
 ''' ************************************************************************ '''
 '''                                APP SET UP                                '''
 ''' ************************************************************************ '''
-
+''' set app, cache time, and session secret key '''
 IP                        = '0.0.0.0'
 PORT                      = 1234
 SEND_FILE_MAX_AGE_DEFAULT = 0 # no cache
@@ -208,27 +213,6 @@ class Post(db.Model):
         else:
             return ""
 
-
-    # TODO: Edit how you want a post excerpt to display
-    def HTML_excerpt(self):
-        excerpt_body = tag_body = ""
-
-        if self.description and len(self.description) > 0:
-            excerpt_body = markdown_text(self.description)
-
-        all_tags = self.tag_names()
-        if all_tags:
-            tag_body = f'<p class="excerpt-tag">Tags: {all_tags}</p>'
-
-        return f"""\
-<a class="excerpt-title-link" href="/blog/{self.slug}/"> <h2 class="display-4 excerpt-title">{self.title}</h2></a>
-<h4 class="lead excerpt-reference">By: {self.author.username} ― {self.publish_date.strftime("%B %d, %Y")}</h4>
-<p class="excerpt-body">{excerpt_body}</p>
-{tag_body}
-<p class="excerpt-category">Category: {self.category.make_link()}</p>\
-        """
-
-
     def make_link(self):
         return f'<a href="/blog/{self.slug}/">{self.title}</a>'
 
@@ -287,11 +271,11 @@ class Comment(db.Model):
     reCAPTCHA_score    = db.Column(db.Float)
 
     # Foreign Keys
-    author_id         = db.Column(db.Integer,   db.ForeignKey('user.id'), nullable=False)
-    author            = db.relationship('User', backref=db.backref('comments', lazy=True))
+    author_id          = db.Column(db.Integer,   db.ForeignKey('user.id'), nullable=False)
+    author             = db.relationship('User', backref=db.backref('comments', lazy=True))
 
-    post_id         = db.Column(db.Integer,   db.ForeignKey('post.id'), nullable=False)
-    post            = db.relationship('Post', backref=db.backref('comments', lazy=True))
+    post_id            = db.Column(db.Integer,   db.ForeignKey('post.id'), nullable=False)
+    post               = db.relationship('Post', backref=db.backref('comments', lazy=True))
 
     def __repr__(self):
         return f'<Comment ({self.author.username} -> {self.id} -> {self.post.slug})>'
@@ -953,8 +937,13 @@ def make_markdown(text):
 @app.template_filter('unescape_HTML')
 def unescape_HTML(text):
     """Unescapes HTML Characters."""
-    print(text, unescape(text))
     return unescape(text)
+
+@app.template_filter('comma_format')
+def comma_format(number):
+    """Comma seperate number."""
+    return "{:,}".format(number)
+
 
 
 ''' ************************************************************************ '''

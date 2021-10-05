@@ -17,10 +17,27 @@
         - ERRORS
 
 """
-import re
+from flask import (
+    session, 
+    redirect, 
+    url_for,
+    render_template,
+    flash,
+    jsonify
+)
 from flask.globals import request
-from setup import *    
 from urllib.parse import unquote_plus
+from werkzeug.security import generate_password_hash, check_password_hash
+from setup import Privileges, Active_Status, Status
+from setup import User, Post, Category, Tag, Option, Comment
+from setup import getUser, add_user, get_user__first, set_user__active_status
+from setup import get_post__all, get_posts__category, get_posts__tag, get_post_slug__first
+from setup import get_tag__first
+from setup import get_category__first
+from setup import get_option, update_option
+from setup import ACCESS_LEVEL, LOG_IN_STATUS
+from setup import app, db, IP, PORT
+from setup import login_required, admin_required
 
 
 
@@ -31,19 +48,19 @@ from urllib.parse import unquote_plus
 # ==================================
 #  LOGGING
 # ==================================
-# @app.before_request
-# def log_visit():    
-#     print("ENDPOING", request.endpoint)
-#     if request.endpoint not in [ 'static', 'admin.static' ]:
-#         num_site_views = Option.query.filter_by(key='num_site_views').first()
-#         if num_site_views:
-#             num_site_views.value = str( int(num_site_views.value) + 1 )
-#             db.session.commit()
-#         else:
-#             new_option = Option(key='num_site_views', value='0')
-#             db.session.add(new_option)
-#             db.session.commit()
-#     return
+@app.before_request
+def log_visit():    
+    if request.endpoint not in [ 'static', 'admin.static' ]:
+        num_page_views = Option.query.filter_by(key='num_page_views').first()
+        if num_page_views:
+            num_page_views.value = str( int(num_page_views.value) + 1 )
+            db.session.commit()
+        else:
+            new_option = Option(key='num_page_views', value='1')
+            db.session.add(new_option)
+            db.session.commit()
+
+    return
 
 # ==================================
 #  LOGIN/LOGOUT/SIGNUP
@@ -68,7 +85,6 @@ def login():
 
         # Get user from database
         possible_user = get_user__first(username)    
-        print(possible_user)
 
         if possible_user and check_password_hash(possible_user.password, password):
             session[LOG_IN_STATUS] = username

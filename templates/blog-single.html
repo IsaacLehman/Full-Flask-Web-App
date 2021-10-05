@@ -19,7 +19,7 @@ Blog
             <h1 class="display-1 text-center">{{ post.title | safe }}</h1>
         </blockquote>
         <figcaption class="blockquote-footer">
-            By: {{ post.author.username }} on {{ post.publish_date.strftime("%B %d, %Y") }}
+            <strong>By:</strong> {{ post.author.username }} on {{ post.publish_date.strftime("%B %d, %Y") }} <strong>|</strong> {{ post.num_views | comma_format }} views
         </figcaption>
     </figure>
     {% else %}
