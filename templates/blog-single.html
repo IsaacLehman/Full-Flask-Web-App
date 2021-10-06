@@ -1,7 +1,7 @@
 {% extends "parts/master.html" %}
 
 {% block title %}
-Blog
+{{ post.title | safe }}
 {% endblock %}
 
 {% block desription %}{{ post.description }}{% endblock %}
