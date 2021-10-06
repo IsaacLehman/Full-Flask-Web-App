@@ -43,6 +43,11 @@ a:hover {
     color: #306856
 }
 
+/* Links */
+.no-underline {
+    text-decoration: none;
+}
+
 
 
 /*
@@ -200,6 +205,11 @@ a:hover {
 .side-bar--side {
     width: 30%;
     float: right;
+}
+
+.center-flex {
+    display: flex;
+    justify-content: center;
 }
 
 /*

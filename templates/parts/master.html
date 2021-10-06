@@ -63,13 +63,16 @@
                 <hr>
                 <div class="container">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12 col-md-4 center-flex mt-1">
                             <span class="lead">
-                                © Copyright 2021: {{ get_option('site-author-name') }}
+                                © {{ get_option('site-author-name') }}
                             </span>
                         </div>
-                        <div class="col-6">
-                            <span class="float-end">
+                        <div class="col-12 col-md-4 center-flex mt-1 order-md-1 order-2">
+                            <a href="/privacy/">Privacy Policy</a>
+                        </div>
+                        <div class="col-12 col-md-4 center-flex mt-1 order-md-2 order-1">
+                            <span class="">
                                 <!-- GITHUB FOLLOW BUTTON -->
                                 <a class="github-button" href="https://github.com/{{ get_option('github-username') }}" data-size="large" data-show-count="true"
                                     aria-label="Follow @{{ get_option('github-username') }} on GitHub">Follow @{{ get_option('github-username') }}</a>

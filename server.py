@@ -168,6 +168,13 @@ def about():
     return render_template("about.html")
 
 
+### PRIVACY ###
+# about page
+@app.route("/privacy/", methods=["GET"])
+def privacy():
+    return render_template("privacy.html")
+
+
 # ==================================
 #  BLOG CONTENT
 # ==================================

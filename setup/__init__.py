@@ -968,4 +968,23 @@ def utility_processor():
         """Array of {name,type} pairs"""
         # Set defaults
         return all_default_options
-    return dict(format_price=format_price, get_option=get_option_filter, get_default_options=get_default_options)
+
+    def get_related_post(cat, num_posts, slug):
+        """Returns num_posts related posts."""
+        #try:
+        return Post.query.filter(
+                    Post.category == get_category__first(cat)
+                ).filter(
+                    Post.status == Status.PUBLISHED
+                ).filter(
+                    Post.slug != slug
+                ).order_by(
+                    Post.publish_date.desc()
+                ).limit(
+                    num_posts
+                ).all()
+        # except Exception:
+        #     print("ERROR")
+        #     return None
+
+    return dict(format_price=format_price, get_option=get_option_filter, get_default_options=get_default_options, get_related_post=get_related_post)

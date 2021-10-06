@@ -637,3 +637,36 @@ main blockquote {
     height: 1.5rem !important;
     box-shadow: none !important;
 }
+
+/* Related Posts */
+.related-card {
+    min-height: 5rem;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: thin solid var(--secondary);
+
+    transition: box-shadow 400ms, border-color 400ms, transform 100ms;
+}
+
+.related-card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    border-color: var(--secondary-hover);
+    transform: scale(1.05);
+}
+
+.related-card .related {
+    font-size: 1.35rem;
+    text-transform: capitalize;
+    color: var(--accent-dark);
+    padding-left: 10px;
+    padding-right: 10px;
+
+    transition: color 400ms;
+}
+
+.related-card:hover .related {
+
+    color: var(--accent-hover);
+}

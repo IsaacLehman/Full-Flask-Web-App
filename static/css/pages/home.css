@@ -64,11 +64,6 @@
     text-transform: capitalize;
 }
 
-/* Links */
-.no-underline {
-    text-decoration: none;
-}
-
 /* Lead seciton */
 .lead-section {
     display: flex;

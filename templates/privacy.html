@@ -1,0 +1,42 @@
+{% extends "parts/master.html" %}
+
+{% block title %}
+Privacy Policy
+{% endblock %}
+
+{% block desription %}Privacy Policy{% endblock %}
+
+
+{% block header_content %}
+<div class="masthead-padding-top">
+    <h1 class="display-1 text-center">Privacy Policy</h1>
+</div>
+
+<div class="container">
+    <div class="lead-section">
+        <p class="lead text-center">
+            Here at Isaac's Tech Blog we may collect some information about you, the visitor. Below are some details about what we collect.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<div class="container mt-4">
+    <h2 class="display-5">What we may collect</h2>
+    <ul>
+        <li>IP</li>
+        <li>General account details (if account is made)
+            <ul>
+                <li>Username</li>
+                <li>Email</li>
+                <li>Hashed Password</li>
+                <li>Last used IP</li>
+            </ul>
+        </li>
+        <li>Data from Google Analytics</li>
+        <li>Data from Google reCAPTCHA</li>
+        <li>Data from Google AdSense (we may monotize from ADs)</li>
+    </ul>
+</div>
+{% endblock %}

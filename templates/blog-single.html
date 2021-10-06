@@ -19,7 +19,7 @@ Blog
             <h1 class="display-1 text-center">{{ post.title | safe }}</h1>
         </blockquote>
         <figcaption class="blockquote-footer">
-            <strong>By:</strong> {{ post.author.username }} on {{ post.publish_date.strftime("%B %d, %Y") }} <strong>|</strong> {{ post.num_views | comma_format }} views
+            By: {{ post.author.username }} on {{ post.publish_date.strftime("%B %d, %Y") }} <strong>|</strong> {{ post.num_views | comma_format }} views
         </figcaption>
     </figure>
     {% else %}
@@ -42,6 +42,24 @@ Blog
         <p class="category">
             Category: {{ post.category.make_link() | safe }}
         </p>
+        <div class="related-posts">
+            {% set related_posts = get_related_post(post.category.slug, 3, post.slug) %}
+            {% if related_posts %}
+            <div class="row">
+                {% for p in related_posts %}
+                    <div class="col-md-4 col-sm-6">
+                        <a class="no-underline" href="/blog/{{ p.slug }}/" title="{{ p.title }}">
+                            <div class="related-card rounded">
+                                <div class="related text-truncate">
+                                    {{ p.title }}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
         <div class="mt-5 comment-section">
             {% if session.logged_in %}
             <div class="p-3 shadow card">
