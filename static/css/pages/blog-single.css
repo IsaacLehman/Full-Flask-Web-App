@@ -670,3 +670,7 @@ main blockquote {
 
     color: var(--accent-hover);
 }
+
+.post-single h2 {
+    margin-top: 4rem;
+}
