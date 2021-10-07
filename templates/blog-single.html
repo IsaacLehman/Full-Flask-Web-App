@@ -36,9 +36,9 @@
         <div class="bottom-dividor"></div>
         
         <div class="related-posts">
-            <h3 class="display-5">Related Posts</h3>
             {% set related_posts = get_related_post(post.category.slug, 3, post.slug) %}
             {% if related_posts %}
+            <h3 class="display-5">Related Posts</h3>
             <div class="row">
                 {% for p in related_posts %}
                     <div class="col-md-4 col-sm-6">
