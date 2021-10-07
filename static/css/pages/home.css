@@ -74,3 +74,12 @@
     max-width: 900px;
     font-size: 1.45rem;
 }
+
+/* side by side */
+.mt-8 {
+    margin-top: 8rem;
+}
+.side-img {
+    width: 100%;
+    height: auto;
+}
