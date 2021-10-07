@@ -29,7 +29,6 @@
             CATEGORY
             USER
             POST
-        - DASHBOARD SET UP
         - LOGIN SET UP
         - FLASK-ADMIN SET UP
         - PYTHON FUNCTIONS
@@ -52,14 +51,12 @@ from flask import (
     redirect, 
     url_for
 )
-# DB/ADMIN/DASHBOARD
+# DB/ADMIN
 from flask_sqlalchemy import SQLAlchemy
 # ---
 from flask_admin import Admin, AdminIndexView, expose 
 from flask_admin.contrib.fileadmin import FileAdmin
 from flask_admin.contrib.sqla import ModelView
-# ---
-import flask_monitoringdashboard as dashboard
 # MARKDOWN
 import markdown
 from markdown.extensions.toc import TocExtension
@@ -718,11 +715,6 @@ def get_posts__title_and_body(key_word):
             return Post.query.filter(Post.title.contains(key_word) | Post.body.contains(key_word)).filter(Post.status == Status.PUBLISHED).order_by(Post.publish_date.desc())
         except:
             return None
-
-''' ************************************************************************ '''
-'''                                DASHBOARD SET UP                          '''
-''' ************************************************************************ '''
-dashboard.bind(app)
 
 
 
