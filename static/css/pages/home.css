@@ -79,7 +79,18 @@
 .mt-8 {
     margin-top: 8rem;
 }
+
 .side-img {
     width: 100%;
     height: auto;
+}
+
+.also-try a {
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.sign-up a {
+    font-weight: 500;
+    text-decoration: none;
 }
