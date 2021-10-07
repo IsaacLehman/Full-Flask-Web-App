@@ -34,15 +34,9 @@
     {% if post %}
         <p>{{ post.body | markdown | safe }}</p>
         <div class="bottom-dividor"></div>
-        {% if post.tag_names() %}
-            <p class="tag">
-                Tags: {{ post.tag_names() | safe }}
-            </p>
-        {% endif %}
-        <p class="category">
-            Category: {{ post.category.make_link() | safe }}
-        </p>
+        
         <div class="related-posts">
+            <h3 class="display-5">Related Posts</h3>
             {% set related_posts = get_related_post(post.category.slug, 3, post.slug) %}
             {% if related_posts %}
             <div class="row">
@@ -61,6 +55,7 @@
             {% endif %}
         </div>
         <div class="mt-5 comment-section">
+            <h3 class="display-5">Comments</h3>
             {% if session.logged_in %}
             <div class="p-3 shadow card">
                 <form class="form m-0" id="comment-form" action="#">
@@ -76,8 +71,8 @@
             </div>
             {% else %}
             <div class="p-3 shadow card">
-                <h5 class="card-title">Login to Add comments.</h5>
-            </div>
+                <h5 class="card-title"><a href="/login/" alt="login">Login</a> to Add comments.</h5>
+            </div> 
             {% endif %}
             <div id="comment-div" class="mt-4">
             </div>

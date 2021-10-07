@@ -639,6 +639,10 @@ main blockquote {
 }
 
 /* Related Posts */
+.related-posts {
+    margin-top: 4rem;
+} 
+
 .related-card {
     min-height: 5rem;
     margin-top: 1.5rem;
@@ -657,7 +661,7 @@ main blockquote {
 }
 
 .related-card .related {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     text-transform: capitalize;
     color: var(--accent-dark);
     padding-left: 10px;
@@ -671,6 +675,22 @@ main blockquote {
     color: var(--accent-hover);
 }
 
+/* POST HEADERS */
 .post-single h2 {
     margin-top: 4rem;
+    color: var(--accent-dark);
+}
+
+h2::after {
+    content: "";
+    display: block;
+    margin-top: .5rem;
+    height: 3px;
+    max-width: 3rem;
+    border-radius: 45px;
+    background: var(--secondary);
+}
+
+.blockquote-footer {
+    margin-top: -.5rem;
 }
