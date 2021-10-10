@@ -142,10 +142,18 @@ table:not(.codehilitetable) tbody tr:hover {
 }
 
 main blockquote {
-    border-left: 4px solid #DDD;
+    border-left: 4px solid var(--accent);
     padding: 0 15px;
-    color: #bbb;
-    box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.25);
+    color: #343a40;
+    font-size: 1.25rem;
+    margin: 1.5rem;
+    border-radius: 5px;
+    line-height: 2;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+}
+
+main blockquote:hover {
+    border-left-color: var(--accent-hover);
 }
 
 /* LINES */

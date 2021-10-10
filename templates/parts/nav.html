@@ -25,7 +25,6 @@
                 {{ nav_link('blog', 'Blog') }}
                 {{ nav_link('about', 'About') }}
                 {% if session.access_level and session.access_level == 'ADMIN' %}{{ admin_nav_link('Admin') }}{% endif %}
-                {% if session.access_level and session.access_level == 'ADMIN' %}{{ dashboard_nav_link('Dashboard') }}{% endif %}
                 {% if session.logged_in %}{{ nav_link('logout', 'Logout', a_classes="logout-link") }}{% endif %}
                 {% if not session.logged_in %}{{ nav_link('login', 'Login') }}{% endif %}
                 {% if not session.logged_in %}{{ nav_link('signup', 'Sign Up') }}{% endif %}
