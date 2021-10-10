@@ -63,6 +63,7 @@ from markdown.extensions.toc import TocExtension
 # RANDOM
 from functools import wraps
 from datetime import datetime
+from urllib.parse import quote_plus
 from html import unescape
 import os
 
@@ -931,10 +932,17 @@ def unescape_HTML(text):
     """Unescapes HTML Characters."""
     return unescape(text)
 
+
 @app.template_filter('comma_format')
 def comma_format(number):
     """Comma seperate number."""
     return "{:,}".format(number)
+
+
+@app.template_filter('quote_plus')
+def do_quote_plus(text):
+    """URL encode"""
+    return quote_plus(text)
 
 
 

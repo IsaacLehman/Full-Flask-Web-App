@@ -235,7 +235,7 @@ def blog__single(slug):
     elif post:
         post.num_views = 1
         db.session.commit()
-    return render_template("blog-single.html", post=post)
+    return render_template("blog-single.html", post=post, slug=slug)
 
 
 # ==================================
