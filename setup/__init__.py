@@ -73,7 +73,7 @@ import os
 '''                                APP SET UP                                '''
 ''' ************************************************************************ '''
 ''' set app, cache time, and session secret key '''
-IP                        = '0.0.0.0'
+IP                        = '127.0.0.1' #'0.0.0.0'
 PORT                      = 1234
 SEND_FILE_MAX_AGE_DEFAULT = 0 # no cache
 SECRET_KEY                = 'mIRGnpOyF0fpDDXfXdzbgA' # Secret Key for Sessions
@@ -843,7 +843,7 @@ class PostModelView(ModelView):
     # Show primary key of tables
     column_display_pk = True
 
-    #column_exclude_list = ['password']
+    column_exclude_list = ['body']
     column_searchable_list = ['body', 'title']
     form_choices = {
         'status': [
