@@ -942,6 +942,7 @@ def send_new_post_email(new_post):
                 HtmlBody=f"""
                     <h1><a href="https://isaacstechblog.com/blog/{new_post.slug}">{new_post.title}</a></h1>
                     <p>{new_post.description}<p>
+                    <small>please contact admin@isaacstechblog.com to unsuscribe.</small>
                 """
             )
         return 'Email sent!'
