@@ -18,7 +18,7 @@ cd Full-Flask-Web-App
 echo "=============================================================================="
 echo "Repository cloned"
 # SETUP
-pip3 -q install flask werkzeug flask-sqlalchemy flask-admin markdown gunicorn pygments
+pip3 -q install flask werkzeug flask-sqlalchemy flask-admin markdown gunicorn pygments postmarker
 echo "=============================================================================="
 echo "PIP installs finished Succesfully!"
 # CREATE DB

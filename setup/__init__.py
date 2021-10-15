@@ -65,6 +65,7 @@ from functools import wraps
 from datetime import datetime
 from urllib.parse import quote_plus
 from html import unescape
+from postmarker.core import PostmarkClient
 import os
 
 
@@ -155,8 +156,11 @@ class User(db.Model):
     # Optional - Text
     first_name        = db.Column(db.Text)
     last_name         = db.Column(db.Text)
-    is_active         = db.Column(db.Text)
     bio               = db.Column(db.Text)
+
+    is_active         = db.Column(db.Text)
+    gets_email        = db.Column(db.Text, default='No')
+
 
     # Optional - Date
     birth_date        = db.Column(db.DateTime)
@@ -642,6 +646,16 @@ def get_post_slug__first(slug):
     except:
         return None
 
+def get_post_latest__first():
+    """
+        Returns the latest post
+        ex. get_post_latest__first()
+    """
+    try:
+        return Post.query.order_by(Post.publish_date.desc()).first()
+    except:
+        return None
+
 def get_post__all():
     """
         Returns all posts (w/o .all())
@@ -802,6 +816,11 @@ all_default_options = [
         'name':'github-username',
         'type':'text',
         'default':''
+    },
+    {
+        'name':'postmark-api-key',
+        'type':'text',
+        'default':''
     }
 ]
 # ==========================================
@@ -905,6 +924,30 @@ if(get_option('display_file_editor') == 'True'):
 ''' ************************************************************************ '''
 '''                               PYTHON FUNCTIONS                           '''
 ''' ************************************************************************ '''
+def send_new_post_email(new_post):
+    # send an email to each user that gets emails
+    try:
+        api_key     = get_option('postmark-api-key')
+        admin_email = get_option('site-author-email')
+        all_users   = User.query.filter_by(gets_email='Yes').all()
+        postmark    = PostmarkClient(server_token=api_key)
+
+        for user in all_users: 
+            user_email = user.email
+
+            postmark.emails.send(
+                From=admin_email,
+                To=user_email,
+                Subject="New Post From Isaac's Tech Blog",
+                HtmlBody=f"""
+                    <h1><a href="https://isaacstechblog.com/blog/{new_post.slug}">{new_post.title}</a></h1>
+                    <p>{new_post.description}<p>
+                """
+            )
+        return 'Email sent!'
+    except Exception:
+        return 'ERROR: sending email...'
+        
 
 ''' ************************************************************************ '''
 '''                               JINJA FILTERS                              '''

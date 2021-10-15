@@ -28,6 +28,12 @@
                 {% endfor %}
             </table>
         </div>
+        <div class="send-email mb-5">
+            <h2>Send new post notification</h2>
+            <form action='/api/v1/send-new-post/' method="GET">
+                <button type="submit" class="btn">Send</button>
+            </form>
+        </div>
         {% else %}
         You do not have sufficient privliges.
         {% endif %}

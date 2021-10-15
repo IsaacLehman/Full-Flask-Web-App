@@ -31,13 +31,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from setup import Privileges, Active_Status, Status
 from setup import User, Post, Category, Tag, Option, Comment
 from setup import getUser, add_user, get_user__first, set_user__active_status
-from setup import get_post__all, get_posts__category, get_posts__tag, get_post_slug__first
+from setup import get_post__all, get_posts__category, get_posts__tag, get_post_slug__first, get_post_latest__first
 from setup import get_tag__first
 from setup import get_category__first
 from setup import get_option, update_option
 from setup import ACCESS_LEVEL, LOG_IN_STATUS
 from setup import app, db, IP, PORT
 from setup import login_required, admin_required
+from setup import send_new_post_email
 
 
 
@@ -337,6 +338,19 @@ def add_comment__API(slug, slug2=None) :
             return jsonify(new_comment.get_JSON())
     except Exception:
          return jsonify({"data":[]})
+
+
+### SEND NEW POST EMAIL ###
+@admin_required
+@app.route('/api/v1/send-new-post/', methods=['GET'])
+def send_new_post_email__API():
+    """
+        Call:   GET /api/v1/send-new-post/
+        Return: Sent
+    """
+    latest_post = get_post_latest__first()
+    return send_new_post_email(latest_post)
+
 
 
 # ==================================
