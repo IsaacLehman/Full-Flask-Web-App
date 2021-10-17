@@ -379,10 +379,10 @@ def sitemap():
     """
     host_base = 'https://isaacstechblog.com'
 
-    # Static routes with static content
+    # Static routes with static content 
     static_urls = list()
     for rule in app.url_map.iter_rules():
-        if not str(rule).startswith("/admin") and not str(rule).startswith("/sitemap") and not str(rule).startswith("/api") and not str(rule).startswith("/post-editor"):
+        if not str(rule).startswith("/admin") and not str(rule).startswith("/sitemap") and not str(rule).startswith("/api") and not str(rule).startswith("/post-editor") and not str(rule).startswith("/logout"):
             if "GET" in rule.methods and len(rule.arguments) == 0:
                 url = {
                     "loc": f"{host_base}{str(rule)}"
