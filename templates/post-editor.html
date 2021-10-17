@@ -1,0 +1,67 @@
+{% extends "parts/master.html" %}
+
+{% block title %}
+Post Editor
+{% endblock %}
+
+{% block desription %}Post Editor{% endblock %}
+
+{% block header_css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog-single.css') }}">
+{% endblock %}
+
+{% block header_content %}
+<div class="masthead-padding-top">
+    
+</div>
+{% endblock %}
+
+{% block main_content %}
+<div class="container post-single">
+    <div id="editor"></div>
+    <button id="submit">Submit</button>
+</div>
+{% endblock %}
+
+{% block footer_scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/comment.js') }}"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
+<script>
+    let editor;
+    ClassicEditor
+        .create( document.querySelector( '#editor' ), {
+            codeBlock: {
+                languages: [
+                    // Do not render the CSS class for the plain text code blocks.
+                    { language: 'plaintext', label: 'Plain text', class: '' },
+
+                    // Use the "php-code" class for PHP code blocks.
+                    { language: 'php', label: 'PHP', class: 'php-code' },
+
+                    // Use the "js" class for JavaScript code blocks.
+                    // Note that only the first ("js") class will determine the language of the block when loading data.
+                    { language: 'javascript', label: 'JavaScript', class: 'js javascript js-code' },
+
+                    // Python code blocks will have the default "language-python" CSS class.
+                    { language: 'python', label: 'Python' }
+                ]
+            }
+        } )
+        .then( newEditor => {
+            editor = newEditor;
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+
+    
+    // Assuming there is a <button id="submit">Submit</button> in your application.
+    document.querySelector( '#submit' ).addEventListener( 'click', () => {
+        const editorData = editor.getData();
+        console.log(editorData);
+        // ...
+    } );
+</script>
+{% endblock %}

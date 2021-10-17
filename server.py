@@ -14,20 +14,24 @@
         - GENERAL PAGES
         - BLOG CONTENT
         - POST ENDPOINTS
+        - EDITOR
+        - SITEMAP
         - ERRORS
 
 """
 from flask import (
     session, 
+    request,
     redirect, 
     url_for,
     render_template,
     flash,
-    jsonify
+    jsonify,
+    make_response
 )
-from flask.globals import request
 from urllib.parse import unquote_plus
 from werkzeug.security import generate_password_hash, check_password_hash
+from urllib.parse import urlparse
 from setup import Privileges, Active_Status, Status
 from setup import User, Post, Category, Tag, Option, Comment
 from setup import getUser, add_user, get_user__first, set_user__active_status
@@ -39,8 +43,6 @@ from setup import ACCESS_LEVEL, LOG_IN_STATUS
 from setup import app, db, IP, PORT
 from setup import login_required, admin_required
 from setup import send_new_post_email
-
-
 
 ''' ************************************************************************ '''
 '''                               ROUTE HANDLERS                             '''
@@ -350,6 +352,57 @@ def send_new_post_email__API():
     """
     latest_post = get_post_latest__first()
     return send_new_post_email(latest_post)
+
+
+# ==================================
+#  EDITOR ENDPOINTS
+# ==================================
+### BLOG SINGLE ###
+@app.route("/post-editor/", methods=["GET"])
+def post_editor():
+   
+    return render_template("post-editor.html")
+
+
+# ==================================
+#  SITEMAP ENDPOINTS
+# ==================================
+@app.route("/sitemap")
+@app.route("/sitemap/")
+@app.route("/sitemap.xml")
+def sitemap():
+    """
+        Route to dynamically generate a sitemap of your website/application.
+        lastmod and priority tags omitted on static pages.
+        lastmod included on dynamic content such as blog posts.
+    """
+    host_base = 'https://isaacstechblog.com'
+
+    # Static routes with static content
+    static_urls = list()
+    for rule in app.url_map.iter_rules():
+        if not str(rule).startswith("/admin") and not str(rule).startswith("/sitemap") and not str(rule).startswith("/api"):
+            if "GET" in rule.methods and len(rule.arguments) == 0:
+                url = {
+                    "loc": f"{host_base}{str(rule)}"
+                }
+                static_urls.append(url)
+
+    # Dynamic routes with dynamic content
+    dynamic_urls = list()
+    blog_posts = Post.query.filter_by(status=Status.PUBLISHED)
+    for post in blog_posts:
+        url = {
+            "loc": f"{host_base}/blog/{post.slug}/",
+            "lastmod": post.publish_date.strftime("%Y-%m-%dT%H:%M:%SZ")
+            }
+        dynamic_urls.append(url)
+
+    xml_sitemap = render_template("sitemap.xml", static_urls=static_urls, dynamic_urls=dynamic_urls, host_base=host_base)
+    response = make_response(xml_sitemap)
+    response.headers["Content-Type"] = "application/xml"
+
+    return response
 
 
 
