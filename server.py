@@ -366,6 +366,7 @@ def post_editor():
 
 # ==================================
 #  SITEMAP ENDPOINTS
+#  CREDIT: https://gist.github.com/Julian-Nash/aa3041b47183176ca9ff81c8382b655a
 # ==================================
 @app.route("/sitemap")
 @app.route("/sitemap/")
@@ -381,7 +382,7 @@ def sitemap():
     # Static routes with static content
     static_urls = list()
     for rule in app.url_map.iter_rules():
-        if not str(rule).startswith("/admin") and not str(rule).startswith("/sitemap") and not str(rule).startswith("/api"):
+        if not str(rule).startswith("/admin") and not str(rule).startswith("/sitemap") and not str(rule).startswith("/api") and not str(rule).startswith("/post-editor"):
             if "GET" in rule.methods and len(rule.arguments) == 0:
                 url = {
                     "loc": f"{host_base}{str(rule)}"
