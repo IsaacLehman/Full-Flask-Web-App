@@ -122,9 +122,14 @@ def logout():
 @app.route("/signup/", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        email    = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
+        email    = request.form.get('email',    None)
+        username = request.form.get('username', None)
+        password = request.form.get('password', None)
+        subscribe= request.form.get('email-subscribe', False)
+
+        get_notifications = 'No'
+        if subscribe:
+            get_notifications = 'Yes'
 
         if not (email and username and password):
             flash("Email, Username and Password are required")
@@ -137,7 +142,7 @@ def signup():
         # Returns salted pwd hash in format : method$salt$hashedvalue
         hashed_pwd = generate_password_hash(password, 'sha256')
 
-        if not add_user(email, username, hashed_pwd):
+        if not add_user(email, username, hashed_pwd, gets_email=get_notifications):
             flash("Username '{u}' and/or Email '{e}' are not available.".format(u=username, e=email))
             return redirect(url_for('signup'))
 

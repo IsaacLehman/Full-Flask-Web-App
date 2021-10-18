@@ -497,13 +497,13 @@ def get_category__all():
 # ==============================================================================
 # USER
 # ==============================================================================
-def add_user(email, username, password, first_name=None, last_name=None, bio=None, birth_date=None, last_publish_date=None, privilege="GENERAL"):
+def add_user(email, username, password, first_name=None, last_name=None, bio=None, birth_date=None, last_publish_date=None, privilege="GENERAL", gets_email='No'):
     """
     Fields:
         add_user(email, username, password, first_name=None, last_name=None, bio=None, birth_date=None, last_publish_date=None)
     """
     try:
-        new_user = User(email=email, username=username, password=password, is_active=Active_Status.INACTIVE, first_name=first_name, last_name=last_name, bio=bio, birth_date=birth_date, last_publish_date=last_publish_date, privilege=privilege)
+        new_user = User(email=email, username=username, password=password, is_active=Active_Status.INACTIVE, first_name=first_name, last_name=last_name, bio=bio, birth_date=birth_date, last_publish_date=last_publish_date, privilege=privilege, gets_email=gets_email)
         db.session.add(new_user)
         db.session.commit()
         return new_user
