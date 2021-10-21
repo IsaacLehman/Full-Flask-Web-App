@@ -66,6 +66,7 @@ from datetime import datetime
 from urllib.parse import quote_plus
 from html import unescape
 from postmarker.core import PostmarkClient
+from webdock.webdock import Webdock
 import os
 
 
@@ -821,6 +822,16 @@ all_default_options = [
         'name':'postmark-api-key',
         'type':'text',
         'default':''
+    },
+    {
+        'name':'webdock-api-key',
+        'type':'text',
+        'default':''
+    },
+    {
+        'name':'webdock-server-slug',
+        'type':'text',
+        'default':''
     }
 ]
 # ==========================================
@@ -924,6 +935,10 @@ if(get_option('display_file_editor') == 'True'):
 ''' ************************************************************************ '''
 '''                               PYTHON FUNCTIONS                           '''
 ''' ************************************************************************ '''
+
+# ==========================================
+# POSTMARK
+# ==========================================
 def send_new_post_email(new_post):
     # send an email to each user that gets emails
     try:
@@ -948,7 +963,28 @@ def send_new_post_email(new_post):
         return 'Email sent!'
     except Exception:
         return 'ERROR: sending email...'
-        
+
+# ==========================================
+# WEBDOCK
+# ==========================================
+def get_server_stats():
+    # Retrieve the last weeks worth of data
+    try:
+        api_key     = get_option('webdock-api-key')
+        server_slug = get_option('webdock-server-slug')
+        wd = Webdock(api_key)
+
+        metrics = wd.get_server_metrics(server_slug)
+
+        if metrics.get('status') != 200:
+            return None
+        all_stats = metrics.get('data')
+
+        return all_stats
+    except Exception:
+        return 'ERROR: Contacting webdock...'
+
+
 
 ''' ************************************************************************ '''
 '''                               JINJA FILTERS                              '''
