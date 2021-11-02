@@ -834,6 +834,8 @@ all_default_options = [
         'default':''
     }
 ]
+
+
 # ==========================================
 # Model Views for DB tables
 # ==========================================
@@ -981,8 +983,45 @@ def get_server_stats():
         all_stats = metrics.get('data')
 
         return all_stats
-    except Exception:
-        return 'ERROR: Contacting webdock...'
+    except Exception as e:
+        return None
+
+# def process_server_stats():
+#     """
+#     Returns arrays with {amount, timestamp}
+#     """
+#     # Get the data
+#     sever_stats = get_server_stats()
+#     if sever_stats is None:
+#         return None
+
+#     # get data groups
+#     disk_stats = sever_stats.get('disk')
+#     ram_stats  = sever_stats.get('disk')
+#     cpu_stats  = sever_stats.get('memory')
+    
+#     # disk
+#     disk_allowed = disk_stats.get('allowed')
+#     disk_usage   = disk_stats.get('samplings')
+
+#     # - calculate left (allowed - used)
+#     disk_left    = [{(disk_allowed - disk_json.get('amount')), disk_json.get('timestamp')} for disk_json in disk_usage]
+#     disk = {
+#         'allowed': disk_allowed,
+#         'used':list(disk_usage),
+#         'left':list(disk_left)
+#     }
+
+#     # ram
+#     ram_usage    = list(ram_stats.get('usageSamplings'))
+
+#     # cpu
+#     cpu_usage    = list(cpu_stats.get('usageSamplings'))
+
+#     return [disk, ram_usage, cpu_usage]
+
+
+
 
 
 

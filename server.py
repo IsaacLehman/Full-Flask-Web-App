@@ -43,6 +43,7 @@ from setup import ACCESS_LEVEL, LOG_IN_STATUS
 from setup import app, db, IP, PORT
 from setup import login_required, admin_required
 from setup import send_new_post_email
+from setup import get_server_stats
 
 ''' ************************************************************************ '''
 '''                               ROUTE HANDLERS                             '''
@@ -357,6 +358,22 @@ def send_new_post_email__API():
     """
     latest_post = get_post_latest__first()
     return send_new_post_email(latest_post)
+
+
+### GET SERVER STATS
+@admin_required
+@app.route('/api/v1/server-stats/', methods=['GET'])
+def get_server_stats__API():
+    """
+        Call:   GET /api/v1/server-stats/
+        Return: JSON
+    """
+    server_stats = get_server_stats()
+    if server_stats:
+        return jsonify(server_stats)
+    
+    return "ERROR GETTING STATS"
+
 
 
 # ==================================

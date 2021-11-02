@@ -1,7 +1,8 @@
 {% extends 'admin/master.html' %}
 {% block body %}
 {{ super() }}
-<div class="row-fluid">
+<link rel="stylesheet"  href="{{ url_for('static', filename='css/plugins/chartist.min.css') }}">
+<div class="row-fluid mb-5">
 
     <div>
         {% if session.access_level and session.access_level == 'ADMIN' %}
@@ -39,6 +40,23 @@
             <h2>Open post editor</h2>
             <a href="/post-editor/"><button class="btn btn-light">Go to Editor</button></a>
         </div>
+
+        <div class="mb-5">
+            <h2>CPU Usage</h2>
+            <div id="cpu-usage" class="ct-chart ct-minor-seventh"></div>
+        </div>
+
+        <div class="mb-5">
+            <h2>Disk Usage</h2>
+            <div id="disk-usage" class="ct-chart ct-minor-seventh"></div>
+        </div>
+
+        <div class="mb-5">
+            <h2>Memory Usage</h2>
+            <div id="memory-usage" class="ct-chart ct-minor-seventh"></div>
+        </div>
+
+        
         {% else %}
         You do not have sufficient privliges.
         {% endif %}
@@ -46,4 +64,7 @@
 
     <a class="btn btn-primary" href="/"><i class="icon-arrow-left icon-white"></i>Back</a>
 </div>
+<script src="{{ url_for('static', filename='js/plugins/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/chartist.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/server-stats.js') }}"></script>
 {% endblock body %}
