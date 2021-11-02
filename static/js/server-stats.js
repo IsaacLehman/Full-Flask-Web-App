@@ -94,11 +94,9 @@ class HttpRequest {
                     type: Chartist.FixedScaleAxis,
                     divisor: 5,
                     labelInterpolationFnc: function (value) {
-                        return moment(value).format('MMM D, h:mm a');
+                        return moment(value).format('M-D, h:mm a');
                     }
-                },
-                // width: '300px',
-                // height: '200px'
+                }
             }
 
             // CPU DATA
