@@ -41,6 +41,14 @@
             <a href="/post-editor/"><button class="btn btn-light">Go to Editor</button></a>
         </div>
 
+        {% set ssh_terminal_url = get_option('webdock-ssh-url', None) %}
+        {% if ssh_terminal_url %}
+        <div class="mb-5">
+            <h2>Open SSH Terminal</h2>
+            <a href="{{ssh_terminal_url}}" target='_blank'><button class="btn btn-light">SSH</button></a>
+        </div>
+        {% endif %}
+
         <div class="mb-5">
             <div class="row">
 

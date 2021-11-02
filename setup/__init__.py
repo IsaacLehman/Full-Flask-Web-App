@@ -832,6 +832,11 @@ all_default_options = [
         'name':'webdock-server-slug',
         'type':'text',
         'default':''
+    },
+    {
+        'name':'webdock-ssh-url',
+        'type':'text',
+        'default':''
     }
 ]
 
