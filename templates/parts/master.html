@@ -12,6 +12,9 @@
         <!-- SITE DESCRIPTION -->
         <meta name="description" content="{% block desription %}{% endblock %}" />
 
+        <!-- CANONICAL LINKS -->
+        {% block canonical %}{% endblock %}
+
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ get_option('ga-tag') }}"></script>
         <script>

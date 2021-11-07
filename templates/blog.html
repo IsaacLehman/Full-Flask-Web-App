@@ -7,6 +7,10 @@ Blog
 
 {% block desription %}Isaac's Tech Blog Posts{% endblock %}
 
+{% block canonical %}
+<link rel="canonical" href="{{request.path}}">
+{% endblock %}
+
 {% block header_content %}
 <div class="masthead-padding-top">
     <h1 class="display-1 text-center">{{ title }}</h1>
