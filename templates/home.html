@@ -11,20 +11,29 @@ Isaac's Tech Blog
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
 {% endblock %}
 
-{% block header_content %}
-<div class="masthead-padding-top">
-    <h1 class="display-1 text-center">Isaac's Tech Blog</h1>
-</div>
+{% block nav_script %}
+    <script src="{{ url_for('static', filename='js/nav-top-img.js') }}"></script>
+{% endblock %}
 
-<div class="container">
-    <div class="lead-section">
-        <p class="lead text-center">
-            <b>Welcome to Isaac's Tech Blog!</b> Here you will find a plethora of software
-            articles sprinkled with the occasional coffee post. What are
-            you waiting for? Select a topic to get started!
-        </p>
+{% block header_content %}
+<div class="home-header p-5 mb-4 text-white"
+  style="background-image: url('{{ url_for('static', filename='img/home-background-code.jpg') }}');">
+    <div class="container home-header-text masthead-margin-top rounded shadow">
+        <div>
+            <h1 class="display-1 text-center">Isaac's Tech Blog</h1>
+        </div>
+
+        <div>
+            <div class="lead-section">
+                <p class="lead text-center">
+                    <b>Welcome to Isaac's Tech Blog!</b> Here you will find a plethora of software
+                    articles sprinkled with the occasional coffee post. What are
+                    you waiting for? <strong>Select a topic to get started!</strong>
+                </p>
+            </div>
+        </div>
     </div>
-</div>
+<div>
 {% endblock %}
 
 {% block main_content %}

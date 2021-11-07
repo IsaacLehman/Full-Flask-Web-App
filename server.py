@@ -191,10 +191,10 @@ def privacy():
 def get_pagination():
     try:
         page     = int(request.args.get('page', 1))
-        per_page = int(request.args.get('size', 10))
+        per_page = int(request.args.get('size', 5))
     except:
         page = 1
-        per_page = 10
+        per_page = 5
     return page, per_page
 
 ### BLOG ###

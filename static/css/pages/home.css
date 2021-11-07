@@ -94,3 +94,26 @@
     font-weight: 500;
     text-decoration: none;
 }
+
+
+/* Home header image */
+.home-header {
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.home-header-text{
+    background-color: rgb(44 44 44 / 32%);
+    line-height: 1;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    padding: 20px 40px;
+}
+
+.masthead-margin-top {
+    margin-top: 8rem;
+    margin-bottom: 4rem;
+}

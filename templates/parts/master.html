@@ -90,8 +90,10 @@
                     </div>
                 </div>
             </div>
+            {% block nav_script %}
+            <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+            {% endblock %}
             {% block footer_scripts %}
-                <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
                 <!-- GITHUB BUTTONS -->
                 <script async defer src="https://buttons.github.io/buttons.js"></script>
             {% endblock %}
