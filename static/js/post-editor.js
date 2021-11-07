@@ -61,7 +61,7 @@ var processed_div = document.getElementById('processed-div');
 
 // start marked up <If default value>
 content = content_element.value;
-html = marked(content);
+html = marked.parse(content);
 process_element.innerHTML = html;
 
 
@@ -98,7 +98,7 @@ content_element.addEventListener('keydown', function (e) {
 content_element.addEventListener('input', (event) => {
     if (is_edit_md) {
         content = content_element.value;
-        html = marked(content);
+        html = marked.parse(content);
         process_element.innerHTML = html;
     } else {
         html = content_element.value;
