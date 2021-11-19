@@ -69,21 +69,20 @@
             {% block main_content %}{% endblock %}
         </main>
         <!-- FOOTER -->
-        <footer class="mt-auto">
+        <footer class="mt-auto wave-background-spacer wave-image">
             {% block footer_content %}{% endblock %}
             <div class="footer-main">
-                <hr>
                 <div class="container">
-                    <div class="row">
-                        <div class="col-12 col-md-4 center-flex mt-1">
+                    <div class="row glass footer-wrap">
+                        <div class="col-12 col-md-4 center-flex footer-col">
                             <span class="lead">
                                 © {{ get_option('site-author-name') }}
                             </span>
                         </div>
-                        <div class="col-12 col-md-4 center-flex mt-1 order-md-1 order-2">
-                            <a href="/privacy/">Privacy Policy</a>
+                        <div class="col-12 col-md-4 center-flex order-md-1 order-2 footer-col">
+                            <a class="link-light" href="/privacy/">Privacy Policy</a>
                         </div>
-                        <div class="col-12 col-md-4 center-flex mt-1 order-md-2 order-1">
+                        <div class="col-12 col-md-4 center-flex order-md-2 order-1 footer-col">
                             <span class="">
                                 <!-- GITHUB FOLLOW BUTTON -->
                                 <a class="github-button" href="https://github.com/{{ get_option('github-username') }}" data-size="large" data-show-count="true"
