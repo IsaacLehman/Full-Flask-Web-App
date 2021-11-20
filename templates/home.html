@@ -37,7 +37,20 @@ Isaac's Tech Blog
 {% endblock %}
 
 {% block main_content %}
+{% if latest_post %}
 <div class="container mt-4">
+    <h2 class="display-5">Latest Post</h2>
+    <div class="excerpt featured-post">
+        <a class="excerpt-title-link" href="/blog/{{ latest_post.slug }}/">
+            <h2 class="excerpt-title">{{ latest_post.title }}</h2>
+        </a>
+        <h4 class="excerpt-reference">By: {{ latest_post.author.username }} ― {{ latest_post.publish_date.strftime("%B %d, %Y") }}</h4>
+        <hr class="excerpt-divider">
+        <p class="excerpt-body">{{ latest_post.description | safe }}</p>
+    </div>
+</div>
+{% endif %}
+<div class="container mt-5">
     <h2 class="display-5">Topics</h2>
     <div class="row categories">
         {% for cat in all_categories %}

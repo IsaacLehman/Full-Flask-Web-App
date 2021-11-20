@@ -162,8 +162,9 @@ def signup():
 @app.route("/", methods=["GET"])
 def home():
     all_categories = Category.query.order_by(Category.name.desc()).all()
-    all_tags = Tag.query.order_by(Tag.name.desc()).all()
-    return render_template("home.html", all_categories=all_categories, all_tags=all_tags)
+    all_tags       = Tag.query.order_by(Tag.name.desc()).all()
+    latest_post    = Post.query.order_by(Post.publish_date.desc()).limit(1).one()
+    return render_template("home.html", all_categories=all_categories, all_tags=all_tags, latest_post=latest_post)
 
 
 # ==================================
