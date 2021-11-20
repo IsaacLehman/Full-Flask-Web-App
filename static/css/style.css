@@ -278,16 +278,16 @@ a:hover {
 */
 
 .toast-padding {
-    margin-bottom: 0;
+    margin-bottom: 4rem;
 }
 
 .toast-header-icon {
     color: red;
 }
 
-@media only screen and (max-width: 991px) {
+@media only screen and (max-width: 767px) {
     .toast-padding {
-        margin-bottom: 4rem;
+        margin-bottom: 8rem;
     }
 }
 

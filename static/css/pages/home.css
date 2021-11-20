@@ -4,6 +4,7 @@
 
 /* Categories */
 .category-card {
+    position: relative;
     height: 5rem;
     margin-top: 1.5rem;
     display: flex;
@@ -31,6 +32,12 @@
 .category-card:hover .category {
 
     color: var(--accent-hover);
+}
+
+.category-card-open-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 
