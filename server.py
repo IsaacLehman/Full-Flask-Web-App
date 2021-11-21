@@ -347,7 +347,7 @@ def add_comment__API(slug, slug2=None) :
             db.session.commit()
 
             # Send SMS notification for new comment
-            sendSMS(f'New comment!\nBY: {current_user.username}\nON: {post.title}\nLINK: https://isaacstechblog/blog/{post.slug}/', get_option('site-author-phone'))
+            sendSMS(f'New comment!\nBY: {current_user.username}\nON: {post.title}\nLINK: https://isaacstechblog.com/blog/{post.slug}/', get_option('site-author-phone'))
 
             return jsonify(new_comment.get_JSON())
     except Exception:
