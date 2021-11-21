@@ -44,6 +44,7 @@ from setup import app, db, IP, PORT
 from setup import login_required, admin_required
 from setup import send_new_post_email
 from setup import get_server_stats
+from setup import sendSMS
 
 ''' ************************************************************************ '''
 '''                               ROUTE HANDLERS                             '''
@@ -344,6 +345,10 @@ def add_comment__API(slug, slug2=None) :
             new_comment = Comment(author=current_user, post=post, body=body, reCAPTCHA_score=reCAPTCHA_score)
             db.session.add(new_comment)
             db.session.commit()
+
+            # Send SMS notification for new comment
+            sendSMS(f'New comment!\nBY: {current_user.username}\nON: {post.title}\nLINK: https://isaacstechblog/blog/{post.slug}/', get_option('site-author-phone'))
+
             return jsonify(new_comment.get_JSON())
     except Exception:
          return jsonify({"data":[]})
@@ -375,6 +380,9 @@ def get_server_stats__API():
     
     return "ERROR GETTING STATS"
 
+
+### PAGE SPECIFC SETTINGS (add css/js on each page)
+# TODO
 
 
 # ==================================

@@ -67,6 +67,7 @@ from urllib.parse import quote_plus
 from html import unescape
 from postmarker.core import PostmarkClient
 from webdock.webdock import Webdock
+from twilio.rest import Client
 import os
 
 
@@ -792,6 +793,11 @@ all_default_options = [
         'name':'site-author-name',
         'type':'text',
         'default':'Site Author'
+    },
+    {
+        'name':'site-author-phone',
+        'type':'text',
+        'default':''
     }, 
     {
         'name':'site-author-email',
@@ -835,6 +841,21 @@ all_default_options = [
     },
     {
         'name':'webdock-ssh-url',
+        'type':'text',
+        'default':''
+    },
+    {
+        'name':'twilio-sid',
+        'type':'text',
+        'default':''
+    },
+    {
+        'name':'twilio-auth-token',
+        'type':'text',
+        'default':''
+    },
+    {
+        'name':'twilio-from-num',
         'type':'text',
         'default':''
     }
@@ -991,41 +1012,25 @@ def get_server_stats():
     except Exception as e:
         return None
 
-# def process_server_stats():
-#     """
-#     Returns arrays with {amount, timestamp}
-#     """
-#     # Get the data
-#     sever_stats = get_server_stats()
-#     if sever_stats is None:
-#         return None
 
-#     # get data groups
-#     disk_stats = sever_stats.get('disk')
-#     ram_stats  = sever_stats.get('disk')
-#     cpu_stats  = sever_stats.get('memory')
-    
-#     # disk
-#     disk_allowed = disk_stats.get('allowed')
-#     disk_usage   = disk_stats.get('samplings')
+# ==========================================
+# TWILIO
+# ==========================================
+def sendSMS(msg, to):
+    try:
+        # Your Account Sid and Auth Token from twilio.com/user/account
+        account_sid = get_option('twilio-sid')
+        auth_token  = get_option('twilio-auth-token')
+        from_num    = get_option('twilio-from-num')
+        client      = Client(account_sid, auth_token)
 
-#     # - calculate left (allowed - used)
-#     disk_left    = [{(disk_allowed - disk_json.get('amount')), disk_json.get('timestamp')} for disk_json in disk_usage]
-#     disk = {
-#         'allowed': disk_allowed,
-#         'used':list(disk_usage),
-#         'left':list(disk_left)
-#     }
+        message = client.messages.create(
+            body=msg, to=to, from_=from_num
+        )
 
-#     # ram
-#     ram_usage    = list(ram_stats.get('usageSamplings'))
-
-#     # cpu
-#     cpu_usage    = list(cpu_stats.get('usageSamplings'))
-
-#     return [disk, ram_usage, cpu_usage]
-
-
+        return message.sid
+    except Exception:
+        return None
 
 
 
