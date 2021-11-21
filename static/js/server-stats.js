@@ -180,15 +180,17 @@ class HttpRequest {
                 console.log(post_data);
                 //'#post-stats'
                 labels = Array();
-                data   = Array();
+                views   = Array();
+                days   = Array();
                 post_data.forEach(element => {
                     labels.push(element.Title);
-                    data.push(element.Views);
+                    views.push(element.Views);
+                    days.push(element.Days);
                 });
-                console.log(labels, data);
+                console.log(labels, views, days);
                 new Chartist.Bar('#post-stats', {
                     labels: labels,
-                    series: [data]
+                    series: [views, days]
                 });
             }
             

@@ -1008,8 +1008,13 @@ def get_server_stats():
             return None
         all_stats = metrics.get('data')
 
+        today = datetime.date(datetime.now())
         post_data = Post.query.order_by(Post.num_views.desc()).all()
-        all_stats['posts'] = [{'Title':cp.title, 'Views':cp.num_views} for cp in post_data]
+        all_stats['posts'] = [{
+            'Title':cp.title, 
+            'Views':cp.num_views, 
+            'Days':(today - datetime.date(cp.publish_date)).days
+            } for cp in post_data]
 
         return all_stats
     except Exception as e:
