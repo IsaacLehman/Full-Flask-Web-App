@@ -9,13 +9,9 @@ Sign Up
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/signup.css') }}">
 {% endblock %}
 
-{% block header_content %}
-<div class="masthead-padding-top"></div>
-{% endblock %}
-
 
 {% block main_content %}
-<div class="justify-content-center container max-300 mt-5">
+<div class="justify-content-center container max-300">
     <h1 class="display-1 text-center pb-3">Sign Up</h1>
     <hr>
     <form action="/signup/" method="post">
