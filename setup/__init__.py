@@ -1008,6 +1008,9 @@ def get_server_stats():
             return None
         all_stats = metrics.get('data')
 
+        post_data = Post.query.order_by(Post.num_views.desc()).all()
+        all_stats['posts'] = [{'Title':cp.title, 'Views':cp.num_views} for cp in post_data]
+
         return all_stats
     except Exception as e:
         return None

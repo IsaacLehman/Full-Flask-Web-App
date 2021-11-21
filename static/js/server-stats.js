@@ -172,6 +172,27 @@ class HttpRequest {
             };
             new Chartist.Line('#memory-usage', memChartData, dateOptions);
 
+
+            // POST DATA
+            post_data = statsResult.posts;
+            
+            if (post_data.length && post_data.length > 0) {
+                console.log(post_data);
+                //'#post-stats'
+                labels = Array();
+                data   = Array();
+                post_data.forEach(element => {
+                    labels.push(element.Title);
+                    data.push(element.Views);
+                });
+                console.log(labels, data);
+                new Chartist.Bar('#post-stats', {
+                    labels: labels,
+                    series: [data]
+                });
+            }
+            
+
         },
         (error) => {                                  // BAD RESPONSE
             console.log('ERROR: ', error)

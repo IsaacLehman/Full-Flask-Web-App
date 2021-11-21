@@ -2,6 +2,23 @@
 {% block body %}
 {{ super() }}
 <link rel="stylesheet"  href="{{ url_for('static', filename='css/plugins/chartist.min.css') }}">
+<style>
+svg.ct-chart-bar, svg.ct-chart-line{
+    overflow: visible;
+}
+.ct-label.ct-label.ct-horizontal.ct-end {
+  position: relative;
+  justify-content: flex-end;
+  text-align: right;
+  transform-origin: 100% 0;
+  transform: translate(-100%) rotate(-45deg);
+  white-space:nowrap;
+}
+
+.ct-chart {
+    margin-bottom: 8rem;
+}
+</style>
 <div class="row-fluid mb-5">
 
     <div>
@@ -52,7 +69,10 @@
         {% if get_option('webdock-api-key', None) and  get_option('webdock-server-slug', None) %}
         <div class="mb-5">
             <div class="row">
-
+                <div class="col-md-12">
+                    <h2>Post Stats</h2>
+                    <div id="post-stats" class="ct-chart ct-minor-seventh"></div>
+                </div>
                 <div class="col-md-6">
                     <h2>CPU Usage</h2>
                     <div id="cpu-usage" class="ct-chart ct-minor-seventh"></div>
