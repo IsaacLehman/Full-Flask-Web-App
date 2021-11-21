@@ -148,6 +148,10 @@ def signup():
             flash("Username '{u}' and/or Email '{e}' are not available.".format(u=username, e=email))
             return redirect(url_for('signup'))
 
+        # Send SMS notification for new user
+        sendSMS(f'New user!\nUN: {username}\nEMAIL: {email}\nNOTIFICATIONS: {subscribe}', get_option('site-author-phone'))
+
+
         flash("User account has been created.")
         return redirect(url_for("login"))
     # if GET
