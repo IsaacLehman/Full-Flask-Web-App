@@ -135,6 +135,9 @@
 
 /* Home featured post */
 .featured-post {
+    padding: 1rem;
+    border-radius: .25rem;
+    border: thin solid transparent;
     border: thin solid var(--secondary);
     transition: box-shadow 400ms, border-color 400ms, transform 100ms;
 }
@@ -142,5 +145,4 @@
 .featured-post:hover {
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
     transform: scale(1.03);
-    border-color: var(--secondary-hover) !important;
 }

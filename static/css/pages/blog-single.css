@@ -902,3 +902,25 @@ h2::after {
     background-color: #8c0615;
     border-color: #8c0615;
 }
+
+/* Progress bar */
+/* Modified from: https://codepen.io/ragav25/pen/BaQdGdy */
+#progressBarContainer {
+    position: absolute;
+    bottom: -.35rem;
+    left: 0;
+    width: 100%;
+    height: .35rem;
+}
+
+#progressBar {
+    position: absolute;
+    bottom: -.35rem;
+    left: 0;
+    width: 0;
+    background: linear-gradient(to right, var(--accent), var(--accent-hover));
+    height: .35rem;
+    opacity: 0;
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}

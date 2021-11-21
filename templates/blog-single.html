@@ -11,6 +11,13 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog-single.css') }}">
 {% endblock %}
 
+{% block header_scripts %}
+<script type="text/javascript">
+    let isSingleBlog = true;
+</script>
+{% endblock %}
+
+
 {% block header_content %}
 <div class="masthead-padding-top">
     {% if post %}
