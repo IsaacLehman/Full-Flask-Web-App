@@ -18,6 +18,18 @@ svg.ct-chart-bar, svg.ct-chart-line{
 .ct-chart {
     margin-bottom: 8rem;
 }
+
+.table-label {
+    height: calc(1.5em + 0.75rem + 2px);
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    font-size: .9rem;
+}
+
+.table-save {
+    width:0;
+}
 </style>
 <div class="row-fluid mb-5">
 
@@ -33,14 +45,14 @@ svg.ct-chart-bar, svg.ct-chart-line{
                 <tr>
                     <th>Key</th>
                     <th>Value</th>
-                    <th></th>
+                    <th class="table-save"></th>
                 </tr>
                 {% for opt in get_default_options() %}
                 <tr>
-                    <form class="form-group" action='/api/v1/option__add/' method="POST">
-                        <td><label for="{{ opt.name }}">{{ opt.name }}</label></td>
+                    <form action='/api/v1/option__add/' method="POST">
+                        <td><label class="table-label" for="{{ opt.name }}">{{ opt.name }}</label></td>
                         <td><input class="form-control" type="{{ opt.type }}" name="{{ opt.name }}" value="{{ get_option(opt.name, opt.default) }}"></td>
-                        <td><button class="btn btn-light" type="submit">Save</button></td>
+                        <td class="table-save"><button class="btn btn-light" type="submit">Save</button></td>
                     </form>
                 </tr>
                 {% endfor %}
