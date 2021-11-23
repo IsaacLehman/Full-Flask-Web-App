@@ -29,7 +29,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
         </p>
         <div class="options mb-5">
             <h2>Set default options</h2>
-            <table>
+            <table class="table table-striped table-bordered table-hover table-sm">
                 <tr>
                     <th>Key</th>
                     <th>Value</th>
@@ -37,10 +37,10 @@ svg.ct-chart-bar, svg.ct-chart-line{
                 </tr>
                 {% for opt in get_default_options() %}
                 <tr>
-                    <form action='/api/v1/option__add/' method="POST">
+                    <form class="form-group" action='/api/v1/option__add/' method="POST">
                         <td><label for="{{ opt.name }}">{{ opt.name }}</label></td>
-                        <td><input type="{{ opt.type }}" name="{{ opt.name }}" value="{{ get_option(opt.name, opt.default) }}"></td>
-                        <td><button type="submit">Save</button></td>
+                        <td><input class="form-control" type="{{ opt.type }}" name="{{ opt.name }}" value="{{ get_option(opt.name, opt.default) }}"></td>
+                        <td><button class="btn btn-light" type="submit">Save</button></td>
                     </form>
                 </tr>
                 {% endfor %}
