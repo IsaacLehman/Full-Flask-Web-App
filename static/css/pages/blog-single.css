@@ -146,8 +146,7 @@ table:not(.codehilitetable) tbody tr:last-of-type {
 }
 
 table:not(.codehilitetable) tbody tr:hover {
-    font-weight: bold;
-    color: var(--accent);
+    color: var(--secondary-hover);
 }
 
 main blockquote {
