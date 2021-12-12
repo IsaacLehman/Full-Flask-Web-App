@@ -113,6 +113,7 @@ table:not(.codehilitetable) {
     margin: 25px 0;
     font-size: 0.9em;
     min-width: 300px;
+    width: 100%;
     box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.35);
     text-align: center;
 }
