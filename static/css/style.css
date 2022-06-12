@@ -336,6 +336,17 @@ a:hover {
     color: var(--secondary-hover);
 }
 
+.excerpt-title-small {
+    font-size: calc(1rem + 1.5vw);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--secondary);
+}
+
+.excerpt-title-small:hover {
+    color: var(--secondary-hover);
+}
+
 .excerpt-reference {
     font-size: 1.25rem;
     font-weight: 300;

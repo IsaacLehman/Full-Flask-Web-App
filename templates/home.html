@@ -48,14 +48,34 @@ Isaac's Tech Blog
 </div>
 {% if latest_post %}
 <div class="container mt-5">
-    <h2 class="display-5">Latest Post</h2>
-    <div class="featured-post">
+    <h2 class="display-5">Latest Posts</h2>
+    <div class="featured-post mt-3">
         <a class="excerpt-title-link" href="/blog/{{ latest_post.slug }}/">
             <h2 class="excerpt-title">{{ latest_post.title }}</h2>
         </a>
         <h3 class="excerpt-reference">By: {{ latest_post.author.username }} ― {{ latest_post.publish_date.strftime("%B %d, %Y") }}</h3>
         <hr class="excerpt-divider">
         <p class="excerpt-body">{{ latest_post.description | safe }}</p>
+    </div>
+</div>
+{% endif %}
+{% if two_recent_posts %}
+<div class="container mt-5">
+    <h2 class="display-5">Recent Posts</h2>
+    <div class="row">
+    {% for p in two_recent_posts %}
+    <div class="col-lg-6 mt-3">
+        <div class="featured-post h-100">
+            <a class="excerpt-title-link" href="/blog/{{ p.slug }}/">
+                <h3 class="excerpt-title">{{ p.title }}</h3>
+            </a>
+            <h3 class="excerpt-reference">By: {{ p.author.username }} ― {{ p.publish_date.strftime("%B
+                %d, %Y") }}</h3>
+            <hr class="excerpt-divider">
+            <p class="excerpt-body  text-truncate">{{ p.description | safe }}</p>
+        </div>
+    </div>
+    {% endfor %}
     </div>
 </div>
 {% endif %}

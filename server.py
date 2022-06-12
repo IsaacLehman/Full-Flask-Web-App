@@ -169,8 +169,16 @@ def signup():
 def home():
     all_categories = Category.query.order_by(Category.name.desc()).all()
     all_tags       = Tag.query.order_by(Tag.name.desc()).all()
-    latest_post    = Post.query.order_by(Post.publish_date.desc()).limit(1).one()
-    return render_template("home.html", all_categories=all_categories, all_tags=all_tags, latest_post=latest_post)
+    latest_posts    = Post.query.order_by(Post.publish_date.desc()).limit(3).all()
+
+    latest_post = None
+    two_recent_posts = None
+    if latest_posts and len(latest_posts) >= 1:
+        latest_post = latest_posts[0]
+    if latest_posts and len(latest_posts) == 3:
+        two_recent_posts = latest_posts[1:]
+
+    return render_template("home.html", all_categories=all_categories, all_tags=all_tags, latest_post=latest_post, two_recent_posts=two_recent_posts)
 
 
 # ==================================
