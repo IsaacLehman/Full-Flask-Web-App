@@ -29,6 +29,7 @@
             CATEGORY
             USER
             POST
+            SEARCH
         - LOGIN SET UP
         - FLASK-ADMIN SET UP
         - PYTHON FUNCTIONS
@@ -699,6 +700,11 @@ def get_posts__tag(tag):
     except:
         return None
 
+
+# ==============================================================================
+# SEARCH
+# ==============================================================================
+
 def get_posts__author(author, is_object=True):
     """
         Returns all posts for a given author (User object or username)
@@ -729,10 +735,10 @@ def get_posts__title_and_body(key_word):
             ex. get_posts__title_and_body('Make')
         """
         try:
-            return Post.query.filter(Post.title.contains(key_word) | Post.body.contains(key_word)).filter(Post.status == Status.PUBLISHED).order_by(Post.publish_date.desc())
+            return Post.query.filter(Post.title.contains(key_word, autoescape=True) | Post.body.contains(key_word, autoescape=True)).filter(Post.status == Status.PUBLISHED).order_by(Post.publish_date.desc())
         except:
             return None
-
+    
 
 
 ''' ************************************************************************ '''

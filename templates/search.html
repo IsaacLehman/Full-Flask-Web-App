@@ -1,0 +1,59 @@
+{% extends "parts/master.html" %}
+{% from "includes/macros.html" import paginate_blog with context %}
+
+{% block title %}
+Blog
+{% endblock %}
+
+{% block desription %}Isaac's Tech Blog Posts{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="{{request.path}}">
+{% endblock %}
+
+{% block header_content %}
+<div class="masthead-padding-top">
+    <h1 class="display-1 text-center">{{ title }}</h1>
+    <h3 class="lead text-center">You searched: {{ search_query }}</h3>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    {% if posts and posts | length > 0 %}
+        {% for p in posts %}
+            {% set all_tags = p.tag_names() %}
+            <div class="excerpt">
+                <a class="excerpt-title-link" href="/blog/{{ p.slug }}/">
+                    <h2 class="excerpt-title">{{ p.title }}</h2>
+                </a>
+                <h4 class="excerpt-reference">By: {{ p.author.username }} ― {{ p.publish_date.strftime("%B %d, %Y") }}</h4>
+                <hr class="excerpt-divider">
+                <p class="excerpt-body">{{ p.description | safe }}</p>
+                {% if all_tags %}
+                <p class="tag">
+                    Tags: {{ all_tags| safe }}
+                </p>
+                {% endif %}
+                <p class="category">
+                    Category: {{ p.category.make_link() | safe }}
+                </p>
+            </div>
+            {% if not loop.last %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+        
+    {% else %}
+        <div class="search-wrap mt-4">
+            <h2 class="display-5">No results found ...</h2>
+            <div class="container search-box d-flex justify-content-center input-group">
+                <form action="/search/" method="get">
+                    <input type="text" class="form-control" name="s" placeholder="sqlite 3 ...">
+                    <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

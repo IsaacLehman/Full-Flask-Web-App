@@ -37,8 +37,17 @@ Isaac's Tech Blog
 {% endblock %}
 
 {% block main_content %}
+<div class="search-wrap mt-4">
+    <h2 class="display-5">Search the site...</h2>
+    <div class="container search-box d-flex justify-content-center input-group">
+        <form action="/search/" method="get">
+            <input type="text" class="form-control" name="s" placeholder="Python ...">
+            <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+</div>
 {% if latest_post %}
-<div class="container mt-4">
+<div class="container mt-5">
     <h2 class="display-5">Latest Post</h2>
     <div class="featured-post">
         <a class="excerpt-title-link" href="/blog/{{ latest_post.slug }}/">

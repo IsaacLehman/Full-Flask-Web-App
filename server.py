@@ -13,6 +13,7 @@
         - HOME
         - GENERAL PAGES
         - BLOG CONTENT
+        - SEARCH
         - POST ENDPOINTS
         - EDITOR
         - SITEMAP
@@ -35,7 +36,7 @@ from urllib.parse import urlparse
 from setup import Privileges, Active_Status, Status
 from setup import User, Post, Category, Tag, Option, Comment
 from setup import getUser, add_user, get_user__first, set_user__active_status
-from setup import get_post__all, get_posts__category, get_posts__tag, get_post_slug__first, get_post_latest__first
+from setup import get_post__all, get_posts__category, get_posts__tag, get_post_slug__first, get_post_latest__first, get_posts__title_and_body
 from setup import get_tag__first
 from setup import get_category__first
 from setup import get_option, update_option
@@ -251,6 +252,31 @@ def blog__single(slug):
         post.num_views = 1
         db.session.commit()
     return render_template("blog-single.html", post=post, slug=slug)
+
+
+# ==================================
+#  SEARCH
+# ==================================
+
+### SEARCH ###
+# search page
+@app.route("/search/", methods=["GET"])
+def search():
+    search_query = request.args.get('s', None)
+    if search_query is None or len(search_query) == 0:
+        return render_template("search.html", title="Search", search_query=search_query)
+
+    # Search the body and title, order by published date
+    posts = get_posts__title_and_body(search_query)
+
+    try:
+        posts = posts.all()
+        print(posts)
+    except:
+        posts = None
+
+    # access posts with posts
+    return render_template("search.html", posts=posts, title="Search", search_query=search_query)
 
 
 # ==================================
