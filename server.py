@@ -55,7 +55,16 @@ from setup import sendSMS
 #  LOGGING
 # ==================================
 @app.before_request
-def log_visit():    
+def log_visit(): 
+    # print('---')   
+    # print(request.endpoint)
+    # print(request.full_path)
+    # print(request.host)
+    # print(request.remote_addr)
+    # print(request.environ.get('HTTP_X_REAL_IP', request.remote_addr))
+    # print(request.environ['REMOTE_ADDR'])
+    # print(request.environ)
+    # print('---')
     if request.endpoint not in [ 'static', 'admin.static' ]:
         num_page_views = Option.query.filter_by(key='num_page_views').first()
         if num_page_views:
@@ -67,6 +76,14 @@ def log_visit():
             db.session.commit()
 
     return
+
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return jsonify({
+        'ip': request.remote_addr,
+        'ip2':request.environ.get('HTTP_X_REAL_IP', request.remote_addr),
+        'ip3':request.environ['REMOTE_ADDR']
+        }), 200
 
 # ==================================
 #  LOGIN/LOGOUT/SIGNUP
