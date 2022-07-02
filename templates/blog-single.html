@@ -128,7 +128,7 @@
             <h3 class="display-5">Related Posts</h3>
             <div class="row">
                 {% for p in related_posts %}
-                    <div class="col-md-4 col-sm-6">
+                    <div class="{% if related_posts | length == 3 %}col-md-4{% endif %} {% if related_posts | length >= 2 %}col-sm-6{% endif %}">
                         <a class="no-underline" href="/blog/{{ p.slug }}/" title="{{ p.title }}">
                             <div class="related-card rounded">
                                 <div class="related text-truncate">
