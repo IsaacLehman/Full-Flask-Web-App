@@ -191,7 +191,7 @@ main blockquote:hover {
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
     width: 100%;
     height: auto;
-    max-height: 400px;
+/*     max-height: 400px; */
     object-fit: cover;
     transition: all 0.3s ease 0s;
 }
