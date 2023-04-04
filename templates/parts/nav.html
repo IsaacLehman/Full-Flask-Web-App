@@ -23,6 +23,7 @@
             <ul class="navbar-nav  mb-2 mb-lg-0">
                 {{ nav_link('home', 'Home') }}
                 {{ nav_link('blog', 'Blog') }}
+                {{ nav_link('tools', 'Tools') }}
                 {{ nav_link('about', 'About') }}
                 {% if session.access_level and session.access_level == 'ADMIN' %}{{ admin_nav_link('Admin') }}{% endif %}
                 {% if session.logged_in %}{{ nav_link('logout', 'Logout', a_classes="logout-link") }}{% endif %}

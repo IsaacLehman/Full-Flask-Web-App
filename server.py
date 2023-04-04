@@ -192,6 +192,13 @@ def about():
     return render_template("about.html")
 
 
+### TOOLS ###
+# about page
+@app.route("/tools/", methods=["GET"])
+def tools():
+    return render_template("tools.html")
+
+
 ### PRIVACY ###
 # about page
 @app.route("/privacy/", methods=["GET"])

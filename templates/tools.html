@@ -1,0 +1,72 @@
+{% extends "parts/master.html" %}
+
+{% block title %}Tools{% endblock %}
+{% block desription %}Web Tools provided by Isaac's Tech Blog{% endblock %}
+
+{% block header_content %}
+<div class="container text-center masthead-padding-top">
+    <style>
+        .header-img {
+            border-radius: 6px;
+            min-width: 200px;
+            width: 60%;
+            height: auto;
+        }
+
+        .tool-img {
+            border-radius: 6px;
+            min-width: 200px;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    </style>
+    <img class="header-img" src="{{ url_for('static', filename='img/tools-bg.jpg') }}" alt="Tool Wall">
+</div>
+{% endblock %}
+
+
+{% block main_content %}
+<div class="container">
+
+    <div class="mb-5">
+        <h1 class="display-1 text-center">Tools</h1>
+    </div>
+    <hr>
+    <div class="row gy-5 mt-5">
+        <!-- Row 1 -->
+        <div class="col-md-6 order-1 order-md-1 d-flex flex-column justify-content-center">
+            <h2 class="text-center">CHMOD Calculator</h2>
+            <p class="lead text-center">Allows you to quickly calculate Linux filesystem permissions as used by the chmod command line utility.</p>
+            <div class="d-inline-flex justify-content-center">
+                <a href="https://isaac.moneyflowio.com/chmod/index.html" target="_blank">Try CHMOD Calculator</a>
+            </div>
+        </div>
+        <div class="col-md-6 order-2 order-md-2">
+            <img class="tool-img" src="{{ url_for('static', filename='img/chmod-calc-img.jpg') }}" alt="CHMOD Calculator">
+        </div>
+        <!-- Row 2 -->
+        <div class="col-md-6 order-3 order-md-4 d-flex flex-column justify-content-center ">
+            <h2 class="text-center">Markdown App</h2>
+            <p class="lead text-center">In browser markdown note app with saving via local storage.</p>
+            <div class="d-inline-flex justify-content-center">
+                <a href="https://isaac.moneyflowio.com/edit_page.html" target="_blank">Try Markdown App</a> <span style="width: 20px" class="text-center">|</span> <a href="https://isaac.moneyflowio.com/example.md.html" target="_blank">Example Markdown</a>
+            </div>
+        </div>
+        <div class="col-md-6 order-4 order-md-3">
+            <img class="tool-img" src="{{ url_for('static', filename='img/md-app-img.jpg') }}" alt="Markdown App">
+        </div>
+        <!-- Row 3 -->
+        <div class="col-md-6 order-5 order-md-5 d-flex flex-column justify-content-center">
+            <h2 class="text-center">Random Number Generator</h2>
+            <p class="lead text-center">A simple app to randomly generate numbers within a range!</p>
+            <div class="d-inline-flex justify-content-center">
+                <a href="https://isaac.moneyflowio.com/tools/random-number/main.html" target="_blank">Try Random Number Generator</a>
+            </div>
+        </div>
+        <div class="col-md-6 order-last order-md-last">
+            <img class="tool-img" src="{{ url_for('static', filename='img/rand-num-img.jpg') }}" alt="Random Number Generator">
+        </div>
+    </div>
+</div>
+{% endblock %}
