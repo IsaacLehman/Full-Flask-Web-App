@@ -11,16 +11,16 @@
     }
 
     function generateNum(low, high) {
-        return Math.ceil((Math.random() * (high - low + 1)) + high);
+        return Math.ceil((Math.random() * (high - low + 1)) + low);
     }
 
     generate.addEventListener('click', async () => {
-        let cur_low = low_num.value;
-        let cur_high = high_num.value;
+        let cur_low = Number(low_num.value);
+        let cur_high = Number(high_num.value);
         let num_to_generate = generateNum(4, 8);
-        let sleep_start = 10;
+        let sleep_start = 15;
 
-        if (!cur_low || !cur_high || cur_low >= cur_high) {
+        if (cur_low === null || cur_high === null || cur_low >= cur_high) {
             error.classList.remove('hide');
         } else {
             error.classList.add('hide');

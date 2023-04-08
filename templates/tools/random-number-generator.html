@@ -28,6 +28,13 @@
             height: auto;
             object-fit: cover;
         }
+
+        /* Media Queries */
+        @media (max-width: 750px) {
+            .header-img  {
+                width: 90%;
+            }
+        }
     </style>
     <img class="header-img" src="{{ url_for('static', filename='img/dice-roll.jpg') }}" alt="Tool Wall">
 </div>
