@@ -11,7 +11,7 @@
     }
 
     function generateNum(low, high) {
-        return Math.ceil((Math.random() * (high - low + 1)) + low);
+        return Math.floor((Math.random() * (high - low + 1)) + low);
     }
 
     generate.addEventListener('click', async () => {
