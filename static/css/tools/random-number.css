@@ -1,0 +1,267 @@
+/* CONSTANTS */
+/* ======================================================== */
+.random-number-wrap {
+    --bg-body-dark: #121212;
+    --bg-dark: white;
+
+    --font-dark: #d7d7d7;
+    --font-secondary-dark: #999;
+    --font-pop-dark: #a72bbc;
+
+    --border-radius: 6px;
+}
+
+
+/* HELPERS */
+/* ======================================================== */
+/* Content */
+.hide {
+    display: none;
+}
+
+.spaced {
+    padding: 0.5rem 1rem;
+    margin: 1rem 2rem;
+}
+
+
+/* Rounding */
+.round {
+    border-radius: var(--border-radius);
+}
+
+.round-t { /* Top */
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+
+.round-r { /* Right */
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.round-b { /* Bottom */
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.round-l { /* Left */
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+}
+
+
+/* Shadows */
+.shadow {
+    box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */
+		0px 4px 5px 0px hsla(0,0%,0%,0.14), 
+		0px 1px 10px 0px hsla(0,0%,0%,0.12), 
+		0px 2px 4px -1px hsla(0,0%,0%,0.2);
+}
+
+.shadow-inset {
+    box-shadow: hsla(0,0%,0%,0.2) 3px 3px 6px 0px inset, hsla(0,0%,0%,0.14) -3px -3px 6px 1px inset;
+}
+
+/* Shadows - Clickable */
+.clickable {
+    box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */
+		0px 4px 5px 0px hsla(0,0%,0%,0.14), 
+		0px 1px 10px 0px hsla(0,0%,0%,0.12), 
+		0px 2px 4px -1px hsla(0,0%,0%,0.2);
+    cursor: pointer;
+    transition: box-shadow 250ms ease-in-out;
+}
+
+.clickable:hover {
+    box-shadow: hsla(0,0%,0%,0.2) 3px 3px 6px 0px inset, hsla(0,0%,0%,0.14) -3px -3px 6px 1px inset;
+}
+
+.clickable:active {
+    box-shadow: hsla(0,0%,0%,0.3) 3px 3px 6px 2px inset, hsla(0,0%,0%,0.24) -3px -3px 6px 3px inset;
+    transition: all 50ms;
+}
+
+
+/* Location */
+.center {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: start;
+    grid-gap: 1rem;
+}
+
+.grid-center-items {
+    justify-items: center;
+}
+
+.grid-1-column {
+    grid-template-columns: auto;
+}
+
+.grid-2-column {
+    grid-template-columns: auto auto;
+}
+
+.grid-3-column {
+    grid-template-columns: auto auto auto;
+}
+
+.grid-4-column {
+    grid-template-columns: auto auto auto auto;
+}
+
+.grid-5-column {
+    grid-template-columns: auto auto auto auto auto;
+}
+
+.grid-item {
+    width: fit-content;
+}
+
+
+/* Task */
+.task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.task div {
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
+
+.task div:not(:last-child) {
+    border-right: thin solid #9c27b0;
+}
+
+.task .grow {
+    flex-grow: 1;
+}
+
+.task .status {
+    width: 25px;
+}
+
+.task .priority {
+    width: 50px;
+}
+
+.task .title {
+    width: 175px;
+}
+
+
+/* Number Input */
+/* Credit: https://stackoverflow.com/a/45396364 */
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.number-input {
+  border: thin solid var(--font-secondary-dark);
+  display: inline-flex;
+}
+
+.number-input,
+.number-input * {
+  box-sizing: border-box;
+}
+
+.number-input button {
+  outline:none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+}
+
+.number-input button:before,
+.number-input button:after {
+  display: inline-block;
+  position: absolute;
+  content: '';
+  width: .75rem;
+  height: 2px;
+  background-color: var(--font-secondary-dark);
+  transform: translate(-50%, -50%);
+}
+.number-input button.plus:after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.number-input input[type=number] {
+  font-family: sans-serif;
+  max-width: 5rem;
+  padding: .5rem;
+  border: solid var(--font-secondary-dark);
+  border-width: 0 2px;
+  font-size: 1.25rem;
+  height: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Generate Btn / bottom fields*/
+.generate-btn {
+    font-size: 1.35rem;
+    margin: 0.5rem 1rem;
+}
+
+.error h2 {
+    margin: 0.5rem 1rem;
+    margin-top: 0;
+    margin-left: 0;
+}
+
+.good {
+    font-size: 10rem;
+}
+
+/* Media Queries */
+@media (max-width: 750px) {
+  /* If smaller than 750px */
+  .grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 80%;
+    margin: auto;
+    grid-gap: 0;
+  }
+
+  .input-wrap .grid-item:first-of-type {
+    margin-bottom: 0;
+  }
+
+  .input-wrap .grid-item:last-of-type {
+    margin-top: 0;
+  }
+}

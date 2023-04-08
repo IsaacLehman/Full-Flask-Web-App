@@ -193,10 +193,15 @@ def about():
 
 
 ### TOOLS ###
-# about page
+# tool home page
 @app.route("/tools/", methods=["GET"])
 def tools():
     return render_template("tools.html")
+
+# tool = random number generator page
+@app.route("/tools/random-number-generator/", methods=["GET"])
+def tools__random_number_generator():
+    return render_template("tools/random-number-generator.html")
 
 
 ### PRIVACY ###

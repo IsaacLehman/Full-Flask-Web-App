@@ -1,0 +1,93 @@
+{% extends "parts/master.html" %}
+
+{% block title %}Tool - Random Number Generator{% endblock %}
+{% block desription %}
+    Web Tools provided by Isaac's Tech Blog.
+    Random Number Generator: A simple app to randomly generate numbers within a range!
+{% endblock %}
+
+{% block header_css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tools/random-number.css') }}">
+{% endblock %}
+
+{% block header_content %}
+<div class="container text-center masthead-padding-top">
+    <style>
+        .header-img {
+            border-radius: 6px;
+            min-width: 200px;
+            width: 60%;
+            height: auto;
+        }
+
+        .tool-img {
+            border-radius: 6px;
+            min-width: 200px;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    </style>
+    <img class="header-img" src="{{ url_for('static', filename='img/dice-roll.jpg') }}" alt="Tool Wall">
+</div>
+{% endblock %}
+
+
+{% block main_content %}
+<div class="container random-number-wrap">
+
+    <div >
+        <h1 class="display- text-center">Random Number Generator</h1>
+        <p class="lead text-center">A simple app to randomly generate numbers within a range!</p>
+    </div>
+    <header class="grid grid-1-column">
+        <div class="grid-item round content spaced text-center">
+            <div class="grid grid-2-column input-wrap">
+                <div class="grid-item content spaced">
+                    <h2>Low End</h2>
+                    <div class="number-input round">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"></button>
+                        <input type="number" step="1" value="1" name="low-end" id="low-end">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                            class="plus"></button>
+                    </div>
+                </div>
+                <div class="grid-item content spaced">
+                    <h2>High End</h2>
+                    <div class="number-input round">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"></button>
+                        <input type="number" step="1" value="10" name="high-end" id="high-end">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                            class="plus"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="grid grid-1-column grid-center-items">
+            <div class="grid-item round content spaced text-center clickable" id="generate-btn">
+                <h3 class="generate-btn">Generate</h3>
+            </div>
+            <div class="grid-item round content spaced result error hide">
+                <span class="text-pop">
+                    <h2>ERROR: Please enter a valid # range</h2>
+                    <hr>
+                    <span class="text-soft">
+                        <b>Note:</b> The low # must be less than the high #
+                    </span>
+                </span>
+            </div>
+            <div class="grid-item round spaced result">
+                <span class="good"></span>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer_scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/tools/random-number.js') }}"></script>
+{% endblock %}
