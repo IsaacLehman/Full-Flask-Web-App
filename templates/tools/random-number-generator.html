@@ -17,42 +17,38 @@
         .header-img {
             border-radius: 6px;
             min-width: 200px;
-            width: 60%;
-            height: auto;
-        }
-
-        .tool-img {
-            border-radius: 6px;
-            min-width: 200px;
-            width: 100%;
+            width: 65%;
             height: auto;
             object-fit: cover;
         }
 
         /* Media Queries */
         @media (max-width: 750px) {
-            .header-img  {
+            .header-img {
                 width: 90%;
             }
         }
     </style>
-    <img class="header-img" src="{{ url_for('static', filename='img/dice-roll.jpg') }}" alt="Tool Wall">
+    <img class="header-img" src="{{ url_for('static', filename='img/dice-roll.jpg') }}" alt="Rolling Dice">
+    <div class="header text-center mx-3 px-2 pt-3">
+        <h1 class="display-3">
+            Random Number Generator
+        </h1>
+        <p class="lead">
+            A simple app to randomly generate numbers within a range!
+        </p>
+    </div>
 </div>
 {% endblock %}
 
 
 {% block main_content %}
 <div class="container random-number-wrap">
-
-    <div >
-        <h1 class="display- text-center">Random Number Generator</h1>
-        <p class="lead text-center">A simple app to randomly generate numbers within a range!</p>
-    </div>
-    <header class="grid grid-1-column">
+    <div class="grid grid-1-column">
         <div class="grid-item round content spaced text-center">
             <div class="grid grid-2-column input-wrap">
                 <div class="grid-item content spaced">
-                    <h2>Low End</h2>
+                    <h3>Low End</h3>
                     <div class="number-input round">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"></button>
                         <input type="number" step="1" value="1" name="low-end" id="low-end">
@@ -61,7 +57,7 @@
                     </div>
                 </div>
                 <div class="grid-item content spaced">
-                    <h2>High End</h2>
+                    <h3>High End</h3>
                     <div class="number-input round">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"></button>
                         <input type="number" step="1" value="10" name="high-end" id="high-end">
@@ -71,15 +67,15 @@
                 </div>
             </div>
         </div>
-    </header>
-    <main>
+    </div>
+    <div>
         <div class="grid grid-1-column grid-center-items">
             <div class="grid-item round content spaced text-center clickable" id="generate-btn">
-                <h3 class="generate-btn">Generate</h3>
+                <h2 class="generate-btn">Generate</h2>
             </div>
             <div class="grid-item round content spaced result error hide">
                 <span class="text-pop">
-                    <h2>ERROR: Please enter a valid # range</h2>
+                    <h3>ERROR: Please enter a valid # range</h3>
                     <hr>
                     <span class="text-soft">
                         <b>Note:</b> The low # must be less than the high #
@@ -90,7 +86,7 @@
                 <span class="good"></span>
             </div>
         </div>
-    </main>
+    </div>
 </div>
 {% endblock %}
 

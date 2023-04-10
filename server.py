@@ -203,6 +203,11 @@ def tools():
 def tools__random_number_generator():
     return render_template("tools/random-number-generator.html")
 
+# tool = CHMOD Calculator page
+@app.route("/tools/chmod-calculator/", methods=["GET"])
+def tools__chmod_calculator():
+    return render_template("tools/chmod-calculator.html")
+
 
 ### PRIVACY ###
 # about page
