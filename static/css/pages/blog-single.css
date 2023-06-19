@@ -266,7 +266,7 @@ main blockquote:hover {
 }
 
 .codehilite .c {
-    color: #776e71
+    color: #979193
 }
 
 /* Comment */
@@ -301,32 +301,32 @@ main blockquote:hover {
 
 /* Punctuation */
 .codehilite .ch {
-    color: #776e71
+    color: #979193
 }
 
 /* Comment.Hashbang */
 .codehilite .cm {
-    color: #776e71
+    color: #979193
 }
 
 /* Comment.Multiline */
 .codehilite .cp {
-    color: #776e71
+    color: #979193
 }
 
 /* Comment.Preproc */
 .codehilite .cpf {
-    color: #776e71
+    color: #979193
 }
 
 /* Comment.PreprocFile */
 .codehilite .c1 {
-    color: #776e71
+    color: #979193
 }
 
 /* Comment.Single */
 .codehilite .cs {
-    color: #776e71
+    color: #979193
 }
 
 /* Comment.Special */
@@ -352,7 +352,7 @@ main blockquote:hover {
 
 /* Generic.Inserted */
 .codehilite .gp {
-    color: #776e71;
+    color: #979193;
     font-weight: bold
 }
 
