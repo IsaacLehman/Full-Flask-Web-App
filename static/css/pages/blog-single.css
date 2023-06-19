@@ -237,6 +237,10 @@ main blockquote:hover {
     margin-bottom: 0;
 }
 
+.codehilite pre code {
+    color: white;
+}
+
 .codehilitetable {
     border: 2px inset #3e3e3ed6;
     background: #1d1d1dfc;
