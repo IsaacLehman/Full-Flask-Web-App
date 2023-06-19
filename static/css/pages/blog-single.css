@@ -100,20 +100,18 @@
 
 .toc>ul>li>a:hover,
 .toc>ul>li>a:active {
-    font-weight: bold;
     background-color: var(--accent);
     box-shadow: 0px 15px 20px var(--accent-hover);
     color: black;
-    transform: translateY(-7px);
+    transform: translateY(-5px);
 }
 
 .toc>ul>li>ul>li>a:hover,
 .toc>ul>li>ul>li>a:active {
-    font-weight: bold;
     background-color: var(--accent);
     box-shadow: 0px 15px 20px var(--accent-hover);
     color: black;
-    transform: translateY(-7px);
+    transform: translateY(-5px);
 }
 
 table:not(.codehilitetable) {
@@ -192,6 +190,9 @@ main blockquote:hover {
     width: 100%;
     height: auto;
 /*     max-height: 400px; */
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
     object-fit: cover;
     transition: all 0.3s ease 0s;
 }
