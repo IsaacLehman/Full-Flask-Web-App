@@ -110,7 +110,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
         </div>		
         
         <div class="col-12 mt-5">
-            <button type="button" class="btn btn-primary w-100" id="calculateBtn">Calculate <i class="bi bi-calculator ms-2"></i></button>
+            <button type="button" class="btn btn-outline-dark w-100" id="calculateBtn">Calculate <i class="bi bi-calculator ms-2"></i></button>
         </div>
     </div>
 
@@ -202,7 +202,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
                 listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
                 listItem.textContent = `$${amount.toFixed(2)}`;
                 const removeBtn = document.createElement('span');
-                removeBtn.className = 'badge bg-primary rounded-pill';
+                removeBtn.className = 'badge bg-dark text-light rounded-pill';
                 removeBtn.innerHTML = 'Remove <i class="bi bi-x-lg ms-1"></i>';
                 removeBtn.addEventListener('click', () => removeExtraMonthlyPayment(index));
                 listItem.appendChild(removeBtn);
@@ -238,7 +238,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
                 listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
                 listItem.textContent = `$${amount.toFixed(2)} on ${date}`;
                 const removeBtn = document.createElement('span');
-                removeBtn.className = 'badge bg-primary rounded-pill';
+                removeBtn.className = 'badge bg-dark text-light rounded-pill';
                 removeBtn.innerHTML = 'Remove <i class="bi bi-x-lg ms-1"></i>';
                 removeBtn.addEventListener('click', () => removeExtraPayment(date));
                 listItem.appendChild(removeBtn);
