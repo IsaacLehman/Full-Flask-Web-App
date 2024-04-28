@@ -54,26 +54,39 @@
         </div>
         <!-- Row 2 -->
         <div class="col-md-6 order-3 order-md-4 d-flex flex-column justify-content-center ">
+            <h2 class="text-center">Loan Math</h2>
+            <p class="lead text-center">See how adding extra payments can affect your loan term and total paid.</p>
+            <div class="d-inline-flex justify-content-center">
+                <a href="/tools/loan-math/">Try Loan Math</a>
+            </div>
+        </div>
+        <div class="col-md-6 order-4 order-md-3">
+            <img class="tool-img" src="{{ url_for('static', filename='img/loan-math-img.png') }}" alt="Loan Math Calculator">
+        </div>                
+    </div>  
+    <div class="row gy-5 mt-5">
+        <!-- Row 3 -->
+        <div class="col-md-6 order-1 order-md-1 d-flex flex-column justify-content-center">
             <h2 class="text-center">Markdown App</h2>
             <p class="lead text-center">In browser markdown note app with saving via local storage.</p>
             <div class="d-inline-flex justify-content-center">
                 <a href="https://isaac.moneyflowio.com/edit_page.html" target="_blank">Try Markdown App</a> <span style="width: 20px" class="text-center">|</span> <a href="https://isaac.moneyflowio.com/example.md.html" target="_blank">Example Markdown</a>
             </div>
         </div>
-        <div class="col-md-6 order-4 order-md-3">
+        <div class="col-md-6 order-2 order-md-2">
             <img class="tool-img" src="{{ url_for('static', filename='img/md-app-img.jpg') }}" alt="Markdown App">
         </div>
-        <!-- Row 3 -->
-        <div class="col-md-6 order-5 order-md-5 d-flex flex-column justify-content-center">
+        <!-- Row 4 -->
+        <div class="col-md-6 order-3 order-md-4 d-flex flex-column justify-content-center">
             <h2 class="text-center">Random Number Generator</h2>
             <p class="lead text-center">A simple app to randomly generate numbers within a range!</p>
             <div class="d-inline-flex justify-content-center">
                 <a href="/tools/random-number-generator/">Try Random Number Generator</a>
             </div>
         </div>
-        <div class="col-md-6 order-last order-md-last">
+        <div class="col-md-6 order-4 order-md-3">
             <img class="tool-img" src="{{ url_for('static', filename='img/rand-num-img.jpg') }}" alt="Random Number Generator">
-        </div>
+        </div>                
     </div>
 </div>
 {% endblock %}

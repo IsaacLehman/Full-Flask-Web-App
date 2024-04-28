@@ -1,0 +1,627 @@
+{% extends "parts/master.html" %}
+
+{% block title %}Tool - CHMOD Calculator{% endblock %}
+{% block desription %}
+Web Tools provided by Isaac's Tech Blog.
+Allows you to quickly calculate Linux filesystem permissions as used by the chmod command line utility.
+{% endblock %}
+
+{% block header_css %}
+{{ super() }}
+<style>
+   
+</style>
+{% endblock %}
+
+{% block header_content %}
+<div class="container text-center masthead-padding-top">
+    <style>
+        .header-img {
+            border-radius: 6px;
+            min-width: 200px;
+            width: 65%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Media Queries */
+        @media (max-width: 750px) {
+            .header-img {
+                width: 90%;
+            }
+        }
+    </style>
+    <img class="header-img" src="{{ url_for('static', filename='img/loan-math-landng-img.jpg') }}" alt="Mortgage Image">
+    <div class="header text-center mx-3 px-2 pt-3">
+        <h1 class="display-3">
+            Loan Math
+        </h1>
+        <p class="lead">
+            Loan math is a simple tool to visualize how adding extra payments can affect the payoff date and the total interest paid.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block main_content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Loan Details</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="loanAmount" class="form-label">Loan Amount</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" id="loanAmount" required placeholder="10,000...">
+                    </div>
+                    <span class="form-text">The balance of the loan at the start date below.</span>
+                </div>
+                <div class="mb-3">
+                    <label for="baseMonthlyPayment" class="form-label">Base Monthly Payment</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" id="baseMonthlyPayment" required placeholder="100...">
+                    </div>
+                    <span class="form-text">The minimum monthly payment required.</span>
+                </div>
+                <div class="mb-3">
+                    <label for="interestRate" class="form-label">Interest Rate</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="interestRate" required placeholder="5...">
+                        <span class="input-group-text">%</span>
+                    </div>
+                    <span class="form-text">The annual interest rate of the loan.</span>
+                </div>
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="month" class="form-control" id="startDate" required>
+                    <span class="form-text">The date the loan was started. This will be the first payment date.</span>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Extra Payments</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="extraMonthlyPayment" class="form-label">Recurring Monthly Payment Options</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" id="extraMonthlyPayment" required placeholder="0...">
+                        <button class="btn btn-outline-secondary" type="button" id="addExtraMonthlyPayment">Add</button>
+                    </div>
+                    <span class="form-text">The additional amount you will pay each month. This will be added to the base monthly payment.</span>
+                    <div class="list-group mt-3" id="extraMonthlyPaymentList"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="extraPaymentDate" class="form-label">One Time Payment Options</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" id="extraPaymentAmount" required placeholder="0...">
+                        <input type="month" class="form-control" id="extraPaymentDate" required>
+                        <button class="btn btn-outline-secondary" type="button" id="addExtraPayment">Add</button>
+                    </div>
+                    <span class="form-text">The additional amount you will pay on the specified date.</span>
+                    <div class="list-group mt-3" id="extraPaymentList"></div>
+                </div>
+            </form>
+        </div>		
+        
+        <div class="col-12 mt-5">
+            <button type="button" class="btn btn-primary w-100" id="calculateBtn">Calculate <i class="bi bi-calculator ms-2"></i></button>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div id="chartContainer"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer_scripts %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loanAmountInput = document.getElementById('loanAmount');
+        const baseMonthlyPaymentInput = document.getElementById('baseMonthlyPayment');
+        const interestRateInput = document.getElementById('interestRate');
+        const startDateInput = document.getElementById('startDate');
+        const extraMonthlyPaymentInput = document.getElementById('extraMonthlyPayment');
+        const extraMonthlyPaymentList = document.getElementById('extraMonthlyPaymentList');
+        const extraPaymentAmountInput = document.getElementById('extraPaymentAmount');
+        const extraPaymentDateInput = document.getElementById('extraPaymentDate');
+        const extraPaymentList = document.getElementById('extraPaymentList');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const chartContainer = document.getElementById('chartContainer');
+        const toastContainer = document.getElementById('toast-container-div');
+
+        let charts = [];
+        let extraMonthlyPayments = [];
+        let extraPayments = {};
+
+        function addToast(title, message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+
+            let headerClass = 'bg-primary';
+            if (type === 'danger') {
+                headerClass = 'bg-danger';
+            } else if (type === 'warning') {
+                headerClass = 'bg-warning';
+            } else if (type === 'success') {
+                headerClass = 'bg-success';
+            } else if (type === 'info') {
+                headerClass = 'bg-info';
+            }
+
+            toast.innerHTML = `
+                <div class="toast-header ${headerClass} text-white">
+                    <strong class="me-auto">${title}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+
+
+        function addExtraMonthlyPayment() {
+            const amount = parseFloat(extraMonthlyPaymentInput.value);
+            if (!isNaN(amount) && amount > 0) {
+                extraMonthlyPayments.push(amount);
+                updateExtraMonthlyPaymentList();
+                extraMonthlyPaymentInput.value = '';
+                addToast('Success', 'Extra monthly payment added.', 'success');
+            } else {
+                addToast('Error', 'Please enter a valid amount.', 'danger');
+            }
+        }
+
+        function removeExtraMonthlyPayment(index) {
+            extraMonthlyPayments.splice(index, 1);
+            updateExtraMonthlyPaymentList();
+        }
+
+        function updateExtraMonthlyPaymentList() {
+            extraMonthlyPaymentList.innerHTML = '';
+            extraMonthlyPayments.forEach((amount, index) => {
+                const listItem = document.createElement('button');
+                listItem.type = 'button';
+                listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                listItem.textContent = `$${amount.toFixed(2)}`;
+                const removeBtn = document.createElement('span');
+                removeBtn.className = 'badge bg-primary rounded-pill';
+                removeBtn.innerHTML = 'Remove <i class="bi bi-x-lg ms-1"></i>';
+                removeBtn.addEventListener('click', () => removeExtraMonthlyPayment(index));
+                listItem.appendChild(removeBtn);
+                extraMonthlyPaymentList.appendChild(listItem);
+            });
+        }
+
+        function addExtraPayment() {
+            const amount = parseFloat(extraPaymentAmountInput.value);
+            let date = extraPaymentDateInput.value;
+            if (!isNaN(amount) && amount > 0 && date) {
+                date = date + '-01';
+                extraPayments[date] = amount;
+                updateExtraPaymentList();
+                extraPaymentAmountInput.value = '';
+                extraPaymentDateInput.value = '';
+                addToast('Success', 'Extra payment added.', 'success');
+            } else {
+                addToast('Error', 'Please enter a valid amount and date.', 'danger');
+            }
+        }
+
+        function removeExtraPayment(date) {
+            delete extraPayments[date];
+            updateExtraPaymentList();
+        }
+
+        function updateExtraPaymentList() {
+            extraPaymentList.innerHTML = '';
+            Object.entries(extraPayments).forEach(([date, amount]) => {
+                const listItem = document.createElement('button');
+                listItem.type = 'button';
+                listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                listItem.textContent = `$${amount.toFixed(2)} on ${date}`;
+                const removeBtn = document.createElement('span');
+                removeBtn.className = 'badge bg-primary rounded-pill';
+                removeBtn.innerHTML = 'Remove <i class="bi bi-x-lg ms-1"></i>';
+                removeBtn.addEventListener('click', () => removeExtraPayment(date));
+                listItem.appendChild(removeBtn);
+                extraPaymentList.appendChild(listItem);
+            });
+        }
+
+        function calculateMonthlyPayment() {
+            // Validate the form
+            if ((!loanAmountInput.value || !baseMonthlyPaymentInput.value || !interestRateInput.value || !startDateInput.value)) {
+                addToast('Error', 'Please fill out all the required fields.', 'danger');
+                return;
+            }
+
+            addToast('Calculating', 'Calculating loan data...', 'info');
+
+            const loanAmount = parseFloat(loanAmountInput.value);
+            const baseMonthlyPayment = parseFloat(baseMonthlyPaymentInput.value);
+            const interestRate = parseFloat(interestRateInput.value) / 100;
+            const startDate = new Date(startDateInput.value + '-01');
+
+            const data = {
+                loanAmount,
+                baseMonthlyPayment,
+                interestRate,
+                startDate,
+                extraMonthlyPayments,
+                extraPayments
+            };
+
+            function calculateInterest(loan, rate) {
+                return loan * rate / 12;
+            }
+
+            function calculatePrincipal(payment, interest) {
+                return payment - interest;
+            }
+
+            function calculateLoan(loan, principal) {
+                return loan - principal;
+            }
+
+            // Destroy the previous charts if they exist
+            charts.forEach(chart => chart.destroy());
+            charts = [];
+
+            // Clear the chart container
+            const chartContainer = document.getElementById('chartContainer');
+            chartContainer.innerHTML = '';
+
+            // Push the 0 extra monthly payment to the list at the begginng for a baseline
+            extraMonthlyPayments.unshift(0);
+
+            // Calculate the loan data
+            let notPaidOff = false;
+            extraMonthlyPayments.forEach(extraPayment => {
+                const chartData = {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Interest Payment',
+                            data: [],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Principal Payment',
+                            data: [],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Loan Balance',
+                            data: [],
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y2'
+                        }
+                    ]
+                };
+
+                let month = 0;
+                let loanTemp = loanAmount;
+                let totalPaid = 0;
+
+                while (loanTemp > 0) {
+                    const [startYear, startMonth, startDay] = (startDateInput.value + '-01').split('-').map(Number);
+                    let yearsToAdd = Math.floor(month / 12) + ((startMonth + (month % 12)) > 12 ? 1 : 0);
+                    let newYear = startYear + yearsToAdd;
+                    let newMonth = (startMonth + month) % 12;
+                    let newDay = startDay;
+
+                    const newDate = new Date(newYear, newMonth, newDay);
+                    let newDateStr = newDate.toISOString().slice(0, 10);
+
+                    let extraPaymentAmount = extraPayment;
+                    if (extraPayments[newDateStr]) {
+                        console.log(`Extra payment on ${newDateStr}: $${extraPayments[newDateStr]}`)
+                        extraPaymentAmount += extraPayments[newDateStr];
+                    }
+
+                    const interest = calculateInterest(loanTemp, interestRate);
+                    const principal = calculatePrincipal(baseMonthlyPayment + extraPaymentAmount, interest);
+                    loanTemp = calculateLoan(loanTemp, principal);
+                    totalPaid += baseMonthlyPayment + extraPaymentAmount;
+
+                    chartData.labels.push(newDate.toLocaleDateString());
+                    chartData.datasets[0].data.push(interest);
+                    chartData.datasets[1].data.push(principal);
+                    chartData.datasets[2].data.push(loanTemp);
+
+                    month++;
+                    console.log(`Month: ${month}, Interest: ${interest}, Principal: ${principal}, Loan: ${loanTemp}, Total Paid: ${totalPaid}`);
+
+                    if (month > (200 * 12)) {
+                        addToast('Error', 'Loan did not pay off in a reasonable amount of time (~200 years). Please check your inputs.', 'danger');
+                        notPaidOff = true;
+                        break;
+                    }
+                }
+
+                const chartCanvas = document.createElement('canvas');
+                chartCanvas.className = 'my-4';
+                chartContainer.appendChild(chartCanvas);
+
+                const chart = new Chart(chartCanvas, {
+                    type: 'line',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Monthly Payment'
+                                }
+                            },
+                            y2: {
+                                beginAtZero: true,
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Loan Balance'
+                                },
+                                grid: {
+                                    drawOnChartArea: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: `Extra Monthly Payment: $${extraPayment.toFixed(2)} - Total Paid: $${totalPaid.toFixed(2)} - Months: ${month} | Years: ${(month / 12).toFixed(2)}`
+                            }
+                        }
+                    }
+                });
+
+                charts.push(chart);
+
+                if(!notPaidOff)
+                    addToast('Success', `Loan paid off in ${month} months with an extra monthly payment of $${extraPayment.toFixed(2)}. Total paid: $${totalPaid.toFixed(2)}`, 'success');
+            });
+
+            // Remove the 0 extra monthly payment from the list
+            extraMonthlyPayments.shift();
+
+            if(notPaidOff) {
+                return;
+            }
+
+            // Now lets create a chart/table for extra per month vs total paid and # of months
+            // Let's add intermediate options for extra monthly payments
+            const extraMonthlyPaymentOptions = [0];
+            const numOptionsPerRange = 10;
+            if(extraMonthlyPayments.length > 0) {
+                const maxExtraMonthlyPayment = Math.max(...extraMonthlyPayments);
+                const range = Math.ceil(maxExtraMonthlyPayment / numOptionsPerRange);
+                for (let i = 1; i <= numOptionsPerRange; i++) {
+                    extraMonthlyPaymentOptions.push(Math.ceil(range * i));
+                }
+                console.log(extraMonthlyPaymentOptions);
+            }
+
+            // Add an hr and a description
+            const hr = document.createElement('hr');
+            chartContainer.appendChild(hr);
+
+            const description = document.createElement('p');
+            description.innerHTML = `
+                <b>Extra Monthly Payment Options:</b>
+                <br>
+                Here are some extra monthly payment options to see how they affect the total paid and the payoff date. 
+                It will create a table based on 10 options per range of the max extra monthly payment.
+                For example, if the max extra monthly payment is $100, it will create options for $10, $20, $30, etc.
+                <br>
+                Use this to see the impact of different extra monthly payments on the loan. Consider trying a significant amount to see the impact
+                across various ranges. When you do this, you will also see the diminishing returns of adding extra monthly payments.
+                <br>
+                <br>
+                <b>Diminishing Returns Example:</b>
+                <br>
+                For a $200K dollar loan with a 5% interest rate and a $1K monthly payment, you will pay about $343K over ~24 years.
+                Now, if you add an extra $200 per month, you will pay $38K less and pay off the loan in ~18 years - that's a big difference!
+                <br>
+                If instead, you decided to add another $200 per month, this time you would be saving an extra $22K overall and pay off the loan in ~14 years.
+                While still a significant difference, you can see the diminishing returns of adding extra monthly payments. By the time you go from
+                $1.6K to $1.8K, you are only saving an extra $1K and paying off the loan in ~6.5 years.
+            `;
+            chartContainer.appendChild(description);
+
+            // Data vars
+            const tableData = [];
+            let lastTotalPaid = null;
+            let basePaid = 0;
+
+            // Create a table to show the data
+            const table = document.createElement('table');
+            table.className = 'table table-striped table-bordered mt-5';
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Extra Monthly Payment</th>
+                        <th>Total Paid</th>
+                        <th>Delta <i class="bi bi-arrow-down-up ms-1"></i></th>
+                        <th>Amount Saved <i class="bi bi-cash ms-1"></i></th>
+                        <th># Payments</th>
+                        <th># Years</th>
+                        <th>Month Paid Off <i class="bi bi-calendar-check ms-1"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${extraMonthlyPaymentOptions.map(extraPayment => {
+                        let month = 0;
+                        let loanTemp = loanAmount;
+                        let totalPaid = 0;
+                        let payOffDate = null;
+
+                        while (loanTemp > 0) {
+                            // Date stuff
+                            const [startYear, startMonth, startDay] = (startDateInput.value + '-01').split('-').map(Number);
+                            let yearsToAdd = Math.floor(month / 12) + ((startMonth + (month % 12)) > 12 ? 1 : 0);
+                            let newYear = startYear + yearsToAdd;
+                            let newMonth = (startMonth + month) % 12;
+                            let newDay = startDay;
+
+                            const newDate = new Date(newYear, newMonth, newDay);
+                            let newDateStr = newDate.toISOString().slice(0, 10);
+
+                            // Like April 2024
+                            payOffDate = newDate.toLocaleDateString('default', { month: 'long', year: 'numeric' });
+
+                            // Extra one time payment stuff
+                            let extraPaymentAmount = extraPayment;
+                            if (extraPayments[newDateStr]) {
+                                extraPaymentAmount += extraPayments[newDateStr];
+                            }
+
+                            // Extra monthly payment stuff
+                            const interest = calculateInterest(loanTemp, interestRate);
+                            const principal = calculatePrincipal(baseMonthlyPayment + extraPaymentAmount, interest);
+                            loanTemp = calculateLoan(loanTemp, principal);
+                            totalPaid += baseMonthlyPayment + extraPaymentAmount;
+
+                            month++;
+                        }
+
+                        tableData.push({ extraPayment, totalPaid, years: (month / 12).toFixed(2)});
+
+                        if (extraPayment === 0) {
+                            basePaid = totalPaid;
+                        }
+
+                        let delta;
+                        if (lastTotalPaid) {
+                            delta = lastTotalPaid - totalPaid;
+                        } else {
+                            delta = 0;
+                        } 
+                        lastTotalPaid = totalPaid;
+
+                        return `
+                            <tr>
+                                <td>$${extraPayment.toFixed(2)}</td>
+                                <td>$${totalPaid.toFixed(2)}</td>
+                                <td>$${delta.toFixed(2)}</td>
+                                <td>$${(basePaid - totalPaid).toFixed(2)}</td>
+                                <td>${month}</td>
+                                <td>${(month / 12).toFixed(2)}</td>
+                                <td>${payOffDate}</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            `;
+
+            chartContainer.appendChild(table);
+
+            // Create a chart to show the data
+            const chartData = {
+                labels: extraMonthlyPaymentOptions.map(extraPayment => `$${extraPayment.toFixed(2)}`),
+                datasets: [
+                    {
+                        label: 'Total Paid',
+                        data: tableData.map(data => data.totalPaid),
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '# Years',
+                        data: tableData.map(data => data.years),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y2'
+                    }
+                ]
+            };
+
+            const chartCanvas = document.createElement('canvas');
+            chartCanvas.className = 'my-4';
+            chartContainer.appendChild(chartCanvas);
+
+            const chart = new Chart(chartCanvas, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Extra Monthly Payment'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Total Paid'
+                            }
+                        },
+                        y2: {
+                            beginAtZero: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Years'
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Extra Monthly Payment Options`
+                        }
+                    }
+                }
+            });
+
+            charts.push(chart);
+
+            addToast('Success', 'Loan data calculated.', 'success');
+        }
+
+        document.getElementById('addExtraMonthlyPayment').addEventListener('click', addExtraMonthlyPayment);
+        document.getElementById('addExtraPayment').addEventListener('click', addExtraPayment);
+        calculateBtn.addEventListener('click', calculateMonthlyPayment);
+    });
+</script>
+<div class="toast-container position-fixed p-3 bottom-0 end-0" id="toast-container-div"></div>
+{% endblock %}

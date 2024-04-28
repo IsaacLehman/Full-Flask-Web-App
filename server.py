@@ -208,6 +208,10 @@ def tools__random_number_generator():
 def tools__chmod_calculator():
     return render_template("tools/chmod-calculator.html")
 
+# tool = Loan Math page
+@app.route("/tools/loan-math/", methods=["GET"])
+def tools__loan_math():
+    return render_template("tools/loan-math.html")
 
 ### PRIVACY ###
 # about page
@@ -234,7 +238,7 @@ def get_pagination():
 @app.route("/blog/", methods=["GET"])
 def blog():
     page, per_page = get_pagination()
-    posts    = get_post__all().paginate(page, per_page, error_out=False)
+    posts    = get_post__all().paginate(page=page, per_page=per_page, error_out=False)
     # access posts with posts.items
     return render_template("blog.html", posts=posts, title="Blog")
 
@@ -243,7 +247,7 @@ def blog():
 @app.route("/blog/categories/<category>/", methods=["GET"])
 def blog__category(category):
     page, per_page = get_pagination()
-    posts    = get_posts__category(category).paginate(page, per_page, error_out=False)
+    posts    = get_posts__category(category).paginate(page=page, per_page=per_page, error_out=False)
     cat_name = get_category__first(category)
     if cat_name:
         cat_name = cat_name.name
@@ -256,7 +260,7 @@ def blog__category(category):
 @app.route("/blog/tags/<tag>/", methods=["GET"])
 def blog__tag(tag):
     page, per_page = get_pagination()
-    posts    = get_posts__tag(tag).paginate(page, per_page, error_out=False)
+    posts    = get_posts__tag(tag).paginate(page=page, per_page=per_page, error_out=False)
     tag_name = get_tag__first(tag)
     if tag_name:
         tag_name = tag_name.name
