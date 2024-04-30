@@ -126,6 +126,12 @@ Allow you to see how adding extra payments can affect your loan term and total p
 {{ super() }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 <script>
+    Number.prototype.format = function(decimalPlaces = 2, thousandsSeparator = ',') {
+        const parts = this.toFixed(decimalPlaces).split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator);
+        return parts.join('.');
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
         const loanAmountInput = document.getElementById('loanAmount');
         const baseMonthlyPaymentInput = document.getElementById('baseMonthlyPayment');
@@ -200,7 +206,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
                 const listItem = document.createElement('button');
                 listItem.type = 'button';
                 listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
-                listItem.textContent = `$${amount.toFixed(2)}`;
+                listItem.textContent = `$${amount.format(2)}`;
                 const removeBtn = document.createElement('span');
                 removeBtn.className = 'badge bg-dark text-light rounded-pill';
                 removeBtn.innerHTML = 'Remove <i class="bi bi-x-lg ms-1"></i>';
@@ -236,7 +242,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
                 const listItem = document.createElement('button');
                 listItem.type = 'button';
                 listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
-                listItem.textContent = `$${amount.toFixed(2)} on ${date}`;
+                listItem.textContent = `$${amount.format(2)} on ${date}`;
                 const removeBtn = document.createElement('span');
                 removeBtn.className = 'badge bg-dark text-light rounded-pill';
                 removeBtn.innerHTML = 'Remove <i class="bi bi-x-lg ms-1"></i>';
@@ -273,7 +279,10 @@ Allow you to see how adding extra payments can affect your loan term and total p
                 return loan * rate / 12;
             }
 
-            function calculatePrincipal(payment, interest) {
+            function calculatePrincipal(loanTemp, payment, interest) {
+                // Check if the loan is paid off if we apply our full principle, if so, return the remaining loan amount
+                if(loanTemp < payment - interest)
+                    return loanTemp;
                 return payment - interest;
             }
 
@@ -344,9 +353,10 @@ Allow you to see how adding extra payments can affect your loan term and total p
                     }
 
                     const interest = calculateInterest(loanTemp, interestRate);
-                    const principal = calculatePrincipal(baseMonthlyPayment + extraPaymentAmount, interest);
+                    const principal = calculatePrincipal(loanTemp, baseMonthlyPayment + extraPaymentAmount, interest);
+                    totalPaid += principal + interest; // Add the interest to the total paid
+
                     loanTemp = calculateLoan(loanTemp, principal);
-                    totalPaid += baseMonthlyPayment + extraPaymentAmount;
 
                     chartData.labels.push(newDate.toLocaleDateString());
                     chartData.datasets[0].data.push(interest);
@@ -401,7 +411,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
                         plugins: {
                             title: {
                                 display: true,
-                                text: `Extra Monthly Payment: $${extraPayment.toFixed(2)} - Total Paid: $${totalPaid.toFixed(2)} - Months: ${month} | Years: ${(month / 12).toFixed(2)}`
+                                text: `Extra Monthly Payment: $${extraPayment.format(2)} - Total Paid: $${totalPaid.format(2)} - Months: ${month} | Years: ${(month / 12).toFixed(2)}`
                             }
                         }
                     }
@@ -410,7 +420,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
                 charts.push(chart);
 
                 if(!notPaidOff)
-                    addToast('Success', `Loan paid off in ${month} months with an extra monthly payment of $${extraPayment.toFixed(2)}. Total paid: $${totalPaid.toFixed(2)}`, 'success');
+                    addToast('Success', `Loan paid off in ${month} months with an extra monthly payment of $${extraPayment.format(2)}. Total paid: $${totalPaid.format(2)}`, 'success');
             });
 
             // Remove the 0 extra monthly payment from the list
@@ -423,7 +433,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
             // Now lets create a chart/table for extra per month vs total paid and # of months
             // Let's add intermediate options for extra monthly payments
             const extraMonthlyPaymentOptions = [0];
-            const numOptionsPerRange = 10;
+            const numOptionsPerRange = 20;
             if(extraMonthlyPayments.length > 0) {
                 const maxExtraMonthlyPayment = Math.max(...extraMonthlyPayments);
                 const range = Math.ceil(maxExtraMonthlyPayment / numOptionsPerRange);
@@ -442,8 +452,8 @@ Allow you to see how adding extra payments can affect your loan term and total p
                 <b>Extra Monthly Payment Options:</b>
                 <br>
                 Here are some extra monthly payment options to see how they affect the total paid and the payoff date. 
-                It will create a table based on 10 options per range of the max extra monthly payment.
-                For example, if the max extra monthly payment is $100, it will create options for $10, $20, $30, etc.
+                It will create a table based on 20 options per range of the max extra monthly payment.
+                For example, if the max extra monthly payment is $100, it will create options for $5, $10, $15, etc.
                 <br>
                 Use this to see the impact of different extra monthly payments on the loan. Consider trying a significant amount to see the impact
                 across various ranges. When you do this, you will also see the diminishing returns of adding extra monthly payments.
@@ -509,9 +519,9 @@ Allow you to see how adding extra payments can affect your loan term and total p
 
                             // Extra monthly payment stuff
                             const interest = calculateInterest(loanTemp, interestRate);
-                            const principal = calculatePrincipal(baseMonthlyPayment + extraPaymentAmount, interest);
+                            const principal = calculatePrincipal(loanTemp, baseMonthlyPayment + extraPaymentAmount, interest);
+                            totalPaid += principal + interest; // Add the interest to the total paid
                             loanTemp = calculateLoan(loanTemp, principal);
-                            totalPaid += baseMonthlyPayment + extraPaymentAmount;
 
                             month++;
                         }
@@ -532,10 +542,10 @@ Allow you to see how adding extra payments can affect your loan term and total p
 
                         return `
                             <tr>
-                                <td>$${extraPayment.toFixed(2)}</td>
-                                <td>$${totalPaid.toFixed(2)}</td>
-                                <td>$${delta.toFixed(2)}</td>
-                                <td>$${(basePaid - totalPaid).toFixed(2)}</td>
+                                <td>$${extraPayment.format(2)}</td>
+                                <td>$${totalPaid.format(2)}</td>
+                                <td>$${delta.format(2)}</td>
+                                <td>$${(basePaid - totalPaid).format(2)}</td>
                                 <td>${month}</td>
                                 <td>${(month / 12).toFixed(2)}</td>
                                 <td>${payOffDate}</td>
@@ -549,7 +559,7 @@ Allow you to see how adding extra payments can affect your loan term and total p
 
             // Create a chart to show the data
             const chartData = {
-                labels: extraMonthlyPaymentOptions.map(extraPayment => `$${extraPayment.toFixed(2)}`),
+                labels: extraMonthlyPaymentOptions.map(extraPayment => `$${extraPayment.format(2)}`),
                 datasets: [
                     {
                         label: 'Total Paid',
