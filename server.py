@@ -213,6 +213,11 @@ def tools__chmod_calculator():
 def tools__loan_math():
     return render_template("tools/loan-math.html")
 
+# tool = qr code generator page
+@app.route("/tools/qr-code-generator/", methods=["GET"])
+def tools__random_number_generator():
+    return render_template("tools/qr-code-generator.html")
+
 ### PRIVACY ###
 # about page
 @app.route("/privacy/", methods=["GET"])
