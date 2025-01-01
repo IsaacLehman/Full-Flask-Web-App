@@ -88,5 +88,18 @@
             <img class="tool-img" src="{{ url_for('static', filename='img/rand-num-img.jpg') }}" alt="Random Number Generator">
         </div>                
     </div>
+    <div class="row gy-5 mt-5">
+        <!-- Row 5 -->
+        <div class="col-md-6 order-1 order-md-1 d-flex flex-column justify-content-center">
+            <h2 class="text-center">QR Code Generator</h2>
+            <p class="lead text-center">Generate QR codes easily with this tool.</p>
+            <div class="d-inline-flex justify-content-center">
+                <a href="/tools/qr-tool/">Try QR Code Generator</a>
+            </div>
+        </div>
+        <div class="col-md-6 order-2 order-md-2">
+            <img class="tool-img" src="{{ url_for('static', filename='img/qr-code.png') }}" alt="QR Code Generator">
+        </div>
+    </div>
 </div>
 {% endblock %}
