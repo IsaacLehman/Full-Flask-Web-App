@@ -215,7 +215,7 @@ def tools__loan_math():
 
 # tool = qr code generator page
 @app.route("/tools/qr-code-generator/", methods=["GET"])
-def tools__random_number_generator():
+def tools__qr_code_generator():
     return render_template("tools/qr-code-generator.html")
 
 ### PRIVACY ###
