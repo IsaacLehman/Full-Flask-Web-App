@@ -2,19 +2,19 @@
 
 {% block title %}QR Code Generator{% endblock %}
 {% block desription %}
-Generate QR codes easily with this tool.
+Generate QR codes easily and for free with the QR Code Generator tool
 {% endblock %}
 
 {% block header_css %}
 {{ super() }}
 <style>
-#qr-tool .qrcode {
+#qr-tool #qrcode {
 	min-height: 256px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
-#qr-tool .qrcode img {
+#qr-tool #qrcode img {
 	max-width: 100%;
 	height: auto;
 }
@@ -69,8 +69,13 @@ Generate QR codes easily with this tool.
             QR Code Generator
         </h1>
         <p class="lead">
-            Enter a URL (or secret message) below to generate a QR code
+            Enter a URL (or secret message) below to generate your QR code <i class="bi bi-qr-code"></i>
         </p>
+		<p>
+			This simple tool allows you to encode any URL or text (with a maximum of 128 characters) into a QR code. Stop paying for QR code generators and start using this free tool!
+			<br>
+			<b>Tracking Tip:</b> If you are linking to a page on your website, consider adding a Google Analytics UTM parameter to the URL for attribution.
+		</p>
     </div>
 </div>
 {% endblock %}
@@ -79,7 +84,7 @@ Generate QR codes easily with this tool.
 <div class="container pt-0 pb-3" id="qr-tool">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm border border-light">
                 <div class="card-body p-4">
                     <form id="qrform">
                         <div class="input-group">
@@ -92,11 +97,11 @@ Generate QR codes easily with this tool.
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label class="form-label">Dark Color</label>
+                                <label class="form-label"><i class="bi bi-front"></i> Code Color</label>
                                 <input type="color" class="form-control form-control-color w-100" id="darkColor" value="#000000">
                             </div>
                             <div class="col-6">
-                                <label class="form-label">Light Color</label>
+                                <label class="form-label"><i class="bi bi-back"></i> Background Color</label>
                                 <input type="color" class="form-control form-control-color w-100" id="lightColor" value="#ffffff">
                             </div>
                         </div>
@@ -111,8 +116,13 @@ Generate QR codes easily with this tool.
                                 <i class="bi bi-clipboard"></i> Copy
                             </button>
                         </div>
+                        <div class="mt-1">
+							<small class="text-muted text-center" style="font-style: italic;">
+								<i class="bi bi-info-circle"></i> Download and copy features may have limited functionality on mobile devices
+							</small>
+						</div>
                     </div>
-                    <div class="text-center mt-3">
+                    <div class="text-center mt-2">
                         <small class="text-muted">
                             Powered by <a href="https://github.com/davidshimjs/qrcodejs" target="_blank" class="text-muted text-decoration-none">QRCode.js</a>
                         </small>
@@ -187,46 +197,100 @@ Generate QR codes easily with this tool.
         regenerateQRCode();
     });
 
-    async function copyToClipboard() {
-        const img = qrCodeElement.querySelector('img');
-        if (!img) return;
-        try {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-            canvas.toBlob(async (blob) => {
-                try {
-                    const item = new ClipboardItem({ 'image/png': blob });
-                    await navigator.clipboard.write([item]);
-                    const btn = document.querySelector('button:last-child');
-                    const originalHtml = btn.innerHTML;
-                    btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
-                    setTimeout(() => {
-                        btn.innerHTML = originalHtml;
-                    }, 2000);
-                } catch (err) {
-                    console.error('Failed to copy image:', err);
-                    await navigator.clipboard.writeText(inputElement.value.trim());
-                }
-            }, 'image/png');
-        } catch (err) {
-            console.error('Failed to copy:', err);
-        }
-    }
+   	// Function to copy QR code content to clipboard
+	async function copyToClipboard() {
+		const img = qrCodeElement.querySelector('img');
+		if (!img) return;
+
+		try {
+			// Try to copy as image first (will work on modern desktop browsers)
+			const canvas = document.createElement('canvas');
+			canvas.width = img.naturalWidth;
+			canvas.height = img.naturalHeight;
+			const ctx = canvas.getContext('2d');
+			ctx.drawImage(img, 0, 0);
+
+			// Check if we can use the modern Clipboard API with images
+			if (navigator.clipboard && navigator.clipboard.write) {
+				try {
+					const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+					const item = new ClipboardItem({ 'image/png': blob });
+					await navigator.clipboard.write([item]);
+					showCopySuccess('Image copied!');
+					return;
+				} catch (err) {
+					console.log('Failed to copy image, trying fallback methods...', err);
+				}
+			}
+
+			// First fallback: Try to copy the canvas data URL
+			try {
+				const dataUrl = canvas.toDataURL('image/png');
+				await navigator.clipboard.writeText(dataUrl);
+				showCopySuccess('Image data copied!');
+				return;
+			} catch (err) {
+				console.log('Failed to copy data URL, trying text fallback...', err);
+			}
+
+		} catch (err) {
+			console.error('Copy failed:', err);
+			// Final fallback: Legacy execCommand method
+			try {
+				const textArea = document.createElement('textarea');
+				textArea.value = inputElement.value.trim();
+				textArea.style.position = 'fixed';
+				textArea.style.left = '-9999px';
+				document.body.appendChild(textArea);
+				textArea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textArea);
+				showCopySuccess('URL copied!');
+			} catch (finalErr) {
+				showCopyError();
+			}
+		}
+	}
+
+	function showCopySuccess(message = 'Copied!') {
+		const btn = copyToClipboardButton;
+		const originalHtml = btn.innerHTML;
+		btn.innerHTML = `<i class="bi bi-check"></i> ${message}`;
+		setTimeout(() => {
+			btn.innerHTML = originalHtml;
+		}, 2000);
+	}
+
+	function showCopyError() {
+		const btn = copyToClipboardButton;
+		const originalHtml = btn.innerHTML;
+		btn.innerHTML = `<i class="bi bi-x"></i> Copy failed`;
+		btn.classList.add('btn-danger');
+		setTimeout(() => {
+			btn.innerHTML = originalHtml;
+			btn.classList.remove('btn-danger');
+		}, 2000);
+	}
 
     function downloadPNG() {
         const img = qrCodeElement.querySelector('img');
         if (!img) return;
-        const currentDate = new Date().toISOString().split('T')[0];
-        const currentInputValue = inputElement.value.trim().replace(/[^a-zA-Z0-9_ ]/g, '').replace(/ /g, '_');
-        const link = document.createElement('a');
-        link.download = `qrcode-${currentDate}-${currentInputValue}.png`;
-        link.href = img.src;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+            const link = document.createElement('a');
+            const currentDate = new Date().toISOString().split('T')[0];
+            const currentInputValue = inputElement.value.trim().replace(/[^a-zA-Z0-9_ ]/g, '').replace(/ /g, '_');
+            link.download = `qrcode-${currentDate}-${currentInputValue}.png`;
+            link.href = URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }, 'image/png');
     }
 
     if (inputElement.value) {
