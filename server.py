@@ -169,7 +169,7 @@ def signup():
 def home():
     all_categories = Category.query.order_by(Category.name.desc()).all()
     all_tags       = Tag.query.order_by(Tag.name.desc()).all()
-    latest_posts    = Post.query.order_by(Post.publish_date.desc()).limit(3).all()
+    latest_posts    = Post.query.filter_by(status=Status.PUBLISHED).order_by(Post.publish_date.desc()).limit(3).all()
 
     latest_post = None
     two_recent_posts = None
