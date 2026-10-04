@@ -200,6 +200,19 @@ main blockquote:hover {
     transform: scale(1.01);
 }
 
+/* Keep the Dottie chat captures within their native pixel dimensions. */
+.post-single img[src="https://storage.googleapis.com/website-embeds/ITB/dottie-conversation.png"],
+.post-single img[src="https://storage.googleapis.com/website-embeds/ITB/dottie-followup-prompt.png"] {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
+    transform: none;
+}
+
 
 /* FOR ANCHOR SCROLLING and NAV HEIGHT */
 :target::before {
